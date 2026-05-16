@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Entrenador Presupuestario</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+}
+
+.codigo{
+    font-size:48px;
+    font-weight:bold;
+    margin:40px 0;
+    word-break:break-word;
+}
+
+button{
+    padding:12px 20px;
+    font-size:18px;
+    cursor:pointer;
+    margin-right:10px;
+    margin-top:10px;
+}
+
+#respuesta{
+    margin-top:30px;
+    background:#f8f8f8;
+    padding:20px;
+    border-radius:10px;
+    display:none;
+}
+
+#navButtons{
+    display:none;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Entrenador de aplicaciones presupuestarias</h1>
+
+<div id="codigo" class="codigo"></div>
+
+<button id="btnRespuesta" onclick="verRespuesta()">
+Mostrar respuesta
+</button>
+
+<div id="respuesta"></div>
+
+<div id="navButtons">
+
+    <button onclick="anterior()">
+        ← Anterior
+    </button>
+
+    <button onclick="siguiente()">
+        Siguiente →
+    </button>
+
+</div>
+
+</div>
+
+<script>
+
+let partidas = [];
+let historial = [];
+let indiceHistorial = -1;
+let actual = null;
+
+// =====================================
+
+async function cargarJSON(){
+
+    const response = await fetch(
+        'partidas_presupuesto_valladolid_2026_MASTER.json'
+    );
+
+    partidas = await response.json();
+
+    siguiente();
+}
+
+// =====================================
+
+function mostrarPartida(partida){
+
+    actual = partida;
+
+    document.getElementById("codigo").innerText =
+        partida.codigo;
+
+    document.getElementById("respuesta").style.display =
+        "none";
+
+    document.getElementById("navButtons").style.display =
+        "none";
+}
+
+// =====================================
+
+function siguiente(){
+
+    // si estamos navegando historial hacia atrás
+    // reutilizamos el siguiente existente
+
+    if(indiceHistorial < historial.length - 1){
+
+        indiceHistorial++;
+
+        mostrarPartida(historial[indiceHistorial]);
+
+        return;
+    }
+
+    const randomIndex = Math.floor(
+        Math.random() * partidas.length
+    );
+
+    const partida = partidas[randomIndex];
+
+    historial.push(partida);
+
+    indiceHistorial++;
+
+    mostrarPartida(partida);
+}
+
+// =====================================
+
+function anterior(){
+
+    if(indiceHistorial <= 0){
+        return;
+    }
+
+    indiceHistorial--;
+
+    mostrarPartida(historial[indiceHistorial]);
+}
+
+// =====================================
+
+function verRespuesta(){
+
+    document.getElementById("respuesta").style.display =
+        "block";
+
+    document.getElementById("navButtons").style.display =
+        "block";
+
+    document.getElementById("respuesta").innerHTML = `
+
+        <h2>ORGÁNICA</h2>
+
+        <p>
+            <strong>${actual.organica.codigo}</strong>
+            →
+            ${actual.organica.texto}
+        </p>
+
+        <hr>
+
+        <h2>PROGRAMAS</h2>
+
+        <p>
+            <strong>${actual.programas.area_gasto.codigo}</strong>
+            →
+            ${actual.programas.area_gasto.texto}
+        </p>
+
+        <p>
+            <strong>${actual.programas.politica_gasto.codigo}</strong>
+            →
+            ${actual.programas.politica_gasto.texto}
+        </p>
+
+        <p>
+            <strong>${actual.programas.grupo_programa.codigo}</strong>
+            →
+            ${actual.programas.grupo_programa.texto}
+        </p>
+
+        <p>
+            <strong>${actual.programas.programa.codigo}</strong>
+            →
+            ${actual.programas.programa.texto}
+        </p>
+
+        <hr>
+
+        <h2>ECONÓMICA</h2>
+
+        <p>
+            <strong>${actual.economica.capitulo.codigo}</strong>
+            →
+            ${actual.economica.capitulo.texto}
+        </p>
+
+        <p>
+            <strong>${actual.economica.articulo.codigo}</strong>
+            →
+            ${actual.economica.articulo.texto}
+        </p>
+
+        <p>
+            <strong>${actual.economica.concepto.codigo}</strong>
+            →
+            ${actual.economica.concepto.texto}
+        </p>
+
+        ${actual.economica.subconcepto ? `
+            <p>
+                <strong>${actual.economica.subconcepto.codigo}</strong>
+                →
+                ${actual.economica.subconcepto.texto}
+            </p>
+        ` : ''}
+
+    `;
+}
+
+// =====================================
+
+cargarJSON();
+
+</script>
+
+</body>
+</html>
