@@ -1,248 +1,762 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Entrenador Presupuestario</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrenador Presupuestario – Valladolid 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
+    :root {
+      --bg:         #f5f4f0;
+      --surface:    #ffffff;
+      --surface-2:  #f0efe9;
+      --border:     rgba(0,0,0,0.10);
+      --border-md:  rgba(0,0,0,0.18);
+      --text:       #1a1a18;
+      --text-2:     #5a5a55;
+      --text-3:     #9a9a94;
+      --accent:     #1a5c3a;
+      --danger:     #b03030;
+      --danger-bg:  #fbeaea;
+      --warn:       #8a5a00;
+      --warn-bg:    #fdf3e0;
+      --success:    #1a5c3a;
+      --success-bg: #e8f3ed;
+      --radius:     10px;
+      --radius-lg:  14px;
+      --font:       'Segoe UI', system-ui, -apple-system, sans-serif;
+      --mono:       'Menlo', 'Consolas', monospace;
+    }
 
-body{
-    font-family: Arial, sans-serif;
-    background:#f4f4f4;
-    padding:40px;
-}
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+    .app { max-width: 820px; margin: 0 auto; padding: 24px 16px 48px; }
 
-.container{
-    max-width:900px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:10px;
-}
+    /* HEADER */
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+    .header h1 span { font-weight: 400; color: var(--text-2); font-size: 14px; display: block; margin-top: 2px; }
 
-.codigo{
-    font-size:48px;
-    font-weight:bold;
-    margin:40px 0;
-    word-break:break-word;
-}
+    /* TABS */
+    .tabs { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .tab-btn { padding: 6px 16px; font-size: 13px; font-family: var(--font); border: none; border-radius: calc(var(--radius) - 2px); background: transparent; color: var(--text-2); cursor: pointer; font-weight: 500; transition: background 0.15s, color 0.15s; }
+    .tab-btn:hover { background: rgba(0,0,0,0.06); color: var(--text); }
+    .tab-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
-button{
-    padding:12px 20px;
-    font-size:18px;
-    cursor:pointer;
-    margin-right:10px;
-    margin-top:10px;
-}
+    /* STAT CARDS */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+    .stat-card .s-label { font-size: 11px; color: var(--text-3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-card .s-val { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+    .stat-card .s-val.good   { color: var(--success); }
+    .stat-card .s-val.warn   { color: var(--warn); }
+    .stat-card .s-val.danger { color: var(--danger); }
 
-#respuesta{
-    margin-top:30px;
-    background:#f8f8f8;
-    padding:20px;
-    border-radius:10px;
-    display:none;
-}
+    /* FILTER ROW */
+    .filter-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-row label { font-size: 13px; color: var(--text-2); white-space: nowrap; }
+    .filter-row select { font-size: 13px; font-family: var(--font); border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface); color: var(--text); padding: 6px 10px; cursor: pointer; max-width: 260px; }
+    .filter-row select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-#navButtons{
-    display:none;
-    margin-top:20px;
-}
+    /* QUESTION CARD */
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; margin-bottom: 12px; min-height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; position: relative; }
+    .q-codigo { font-family: var(--mono); font-size: 44px; font-weight: 700; color: var(--text); letter-spacing: 0.03em; word-break: break-all; line-height: 1.1; }
+    .q-info { font-size: 12px; color: var(--text-3); }
+    .q-nivel { position: absolute; top: 12px; right: 14px; font-size: 11px; padding: 3px 8px; border-radius: 99px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
 
-</style>
+    /* ANSWER CARD */
+    .answer-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 12px; display: none; }
+    .answer-card.shown { display: block; }
+    .answer-section { margin-bottom: 14px; }
+    .answer-section:last-child { margin-bottom: 0; }
+    .answer-title { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+    .answer-row { display: flex; gap: 10px; align-items: baseline; margin-bottom: 5px; }
+    .answer-code { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); min-width: 56px; flex-shrink: 0; }
+    .answer-text { font-size: 14px; color: var(--text); line-height: 1.4; }
+    .answer-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
 
+    /* BUTTONS */
+    .btn { padding: 9px 20px; font-size: 14px; font-family: var(--font); border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface); color: var(--text); cursor: pointer; font-weight: 500; transition: background 0.12s, transform 0.08s; }
+    .btn:hover { background: var(--surface-2); }
+    .btn:active { transform: scale(0.98); }
+    .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn.primary:hover { background: #154d30; }
+    .btn.success { border-color: var(--success); color: var(--success); background: var(--success-bg); }
+    .btn.success:hover { background: #d0ecd8; }
+    .btn.fail { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+    .btn.fail:hover { background: #f5d6d6; }
+    .btn.ghost { background: transparent; border-color: var(--border); color: var(--text-2); font-size: 13px; padding: 7px 14px; }
+    .btn.ghost:hover { background: var(--surface-2); }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
+    .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+    .nav-info { font-size: 12px; color: var(--text-3); }
+
+    /* PROGRESS */
+    .progress-section { margin-bottom: 16px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
+    .progress-label strong { color: var(--text); }
+    .progress-bar-wrap { background: var(--surface-2); border-radius: 99px; height: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+    .progress-bar-fill.dom { background: #2d8a5a; }
+
+    /* TABLES */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+    .data-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border-md); }
+    .data-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--surface-2); }
+
+    /* BADGES */
+    .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
+    .badge.ok      { background: var(--success-bg); color: var(--success); }
+    .badge.missing { background: var(--danger-bg);  color: var(--danger);  }
+    .badge.partial { background: var(--warn-bg);    color: var(--warn);    }
+
+    /* MISC */
+    .section-header { font-size: 13px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.08em; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .info-msg { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; font-size: 13px; color: var(--text-2); margin-bottom: 16px; line-height: 1.5; }
+    .error-msg { background: var(--danger-bg); border: 1px solid rgba(176,48,48,0.2); border-radius: var(--radius); padding: 16px; color: var(--danger); font-size: 14px; margin-bottom: 16px; line-height: 1.6; }
+    .error-msg code { font-family: var(--mono); font-size: 12px; background: rgba(176,48,48,0.08); padding: 1px 4px; border-radius: 3px; }
+    .loading { text-align: center; padding: 48px 0; color: var(--text-3); font-size: 14px; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border-md); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .key-hint { text-align: center; font-size: 11px; color: var(--text-3); margin-top: 10px; }
+    kbd { font-family: var(--mono); background: var(--surface-2); border: 1px solid var(--border-md); border-radius: 4px; padding: 1px 5px; font-size: 11px; }
+
+    @media (max-width: 500px) {
+      .q-codigo { font-size: 32px; }
+      .btn { padding: 9px 14px; font-size: 13px; }
+    }
+  </style>
 </head>
 <body>
+<div class="app">
 
-<div class="container">
+  <div class="header">
+    <h1>Entrenador Presupuestario
+      <span>Valladolid 2026 · Técnico Medio</span>
+    </h1>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('entrenar',this)">Entrenar</button>
+      <button class="tab-btn" onclick="showTab('progreso',this)">Progreso</button>
+      <button class="tab-btn" onclick="showTab('eha',this)">Programas</button>
+    </div>
+  </div>
 
-<h1>Entrenador de aplicaciones presupuestarias</h1>
+  <!-- ENTRENAR -->
+  <div id="tab-entrenar" class="tab-panel active">
+    <div class="stats-row">
+      <div class="stat-card"><div class="s-label">Vistas hoy</div><div class="s-val" id="stat-vistas">0</div></div>
+      <div class="stat-card"><div class="s-label">Aciertos</div><div class="s-val good" id="stat-aciertos">0</div></div>
+      <div class="stat-card"><div class="s-label">Fallos</div><div class="s-val warn" id="stat-fallos">0</div></div>
+      <div class="stat-card"><div class="s-label">En cola</div><div class="s-val" id="stat-cola">-</div></div>
+    </div>
+    <div class="filter-row">
+      <label for="filtro-prog">Programa:</label>
+      <select id="filtro-prog" onchange="aplicarFiltro()">
+        <option value="">Todos los programas</option>
+      </select>
+      <label for="modo-select">Modo:</label>
+      <select id="modo-select" onchange="aplicarFiltro()">
+        <option value="spaced">Repeticion espaciada</option>
+        <option value="shuffle">Barajado completo</option>
+        <option value="weak">Solo falladas</option>
+      </select>
+    </div>
+    <div id="loading-msg" class="loading">
+      <div class="spinner"></div><br>Cargando partidas...
+    </div>
+    <div id="error-msg" class="error-msg" style="display:none">
+      <strong>No se pudo cargar el archivo JSON.</strong><br>
+      Asegurate de que <code>partidas_presupuesto_valladolid_2026_MASTER.json</code> esta en la misma carpeta.<br><br>
+      Si abres el archivo con <code>file://</code>, usa un servidor local:<br>
+      <code>python3 -m http.server 8000</code> y abre <code>http://localhost:8000</code>
+    </div>
+    <div id="main-trainer" style="display:none">
+      <div class="question-card">
+        <div class="q-nivel" id="q-nivel"></div>
+        <div class="q-codigo" id="q-codigo">-</div>
+        <div class="q-info"   id="q-info"></div>
+      </div>
+      <div id="answer-card" class="answer-card"></div>
+      <div class="btn-row" id="btn-mostrar-row">
+        <button class="btn primary" onclick="mostrarRespuesta()">Mostrar respuesta &nbsp;<kbd>Espacio</kbd></button>
+      </div>
+      <div class="btn-row" id="btn-valorar-row" style="display:none">
+        <button class="btn ghost"   onclick="anterior()">Anterior</button>
+        <button class="btn fail"    onclick="valorar(false)">No la sabia &nbsp;<kbd>Izq</kbd></button>
+        <button class="btn success" onclick="valorar(true)">La sabia &nbsp;<kbd>Der</kbd></button>
+      </div>
+      <div class="nav-row">
+        <span class="nav-info" id="nav-info"></span>
+        <button class="btn ghost" onclick="siguiente()">Saltar <kbd>S</kbd></button>
+      </div>
+      <div class="key-hint">
+        <kbd>Espacio</kbd> mostrar &nbsp;· &nbsp;<kbd>Der</kbd> la sabia &nbsp;·&nbsp; <kbd>Izq</kbd> no la sabia &nbsp;·&nbsp; <kbd>S</kbd> saltar
+      </div>
+    </div>
+  </div>
 
-<div id="codigo" class="codigo"></div>
+  <!-- PROGRESO -->
+  <div id="tab-progreso" class="tab-panel">
+    <div class="progress-section">
+      <div class="progress-label"><strong>Partidas vistas</strong><span id="prog-vistas-pct">0%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-vistas-bar" style="width:0%"></div></div>
+    </div>
+    <div class="progress-section">
+      <div class="progress-label"><strong>Dominadas</strong> <span style="font-weight:400;color:var(--text-3)">(aciertos >= 2)</span><span id="prog-dom-pct">0%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill dom" id="prog-dom-bar" style="width:0%"></div></div>
+    </div>
+    <div class="stats-row" style="margin-top:20px">
+      <div class="stat-card"><div class="s-label">Total partidas</div><div class="s-val" id="p-total">-</div></div>
+      <div class="stat-card"><div class="s-label">Vistas</div><div class="s-val" id="p-vistas">0</div></div>
+      <div class="stat-card"><div class="s-label">Dominadas</div><div class="s-val good" id="p-dominadas">0</div></div>
+      <div class="stat-card"><div class="s-label">Para repasar</div><div class="s-val warn" id="p-repasar">0</div></div>
+    </div>
+    <div style="text-align:right;margin-bottom:4px">
+      <button class="btn ghost" onclick="resetProgreso()">Reiniciar progreso</button>
+    </div>
+    <div class="section-header">Desglose por programa</div>
+    <div id="prog-programas"><div class="loading" style="padding:20px 0">Carga primero las partidas en Entrenar.</div></div>
+  </div>
 
-<button id="btnRespuesta" onclick="verRespuesta()">
-Mostrar respuesta
-</button>
+  <!-- PROGRAMAS -->
+  <div id="tab-eha" class="tab-panel">
+    <div class="info-msg">
+      Verificacion basada en el <strong>Presupuesto de Gastos 2026 del Ayuntamiento de Valladolid</strong>.
+      Se comprueba si tu JSON cubre los <strong>59 programas</strong> y <strong>39 grupos</strong> que realmente usa Valladolid
+      (no la clasificacion EHA completa, que incluye grupos que este ayuntamiento no utiliza).
+    </div>
+    <div id="eha-content"><div class="loading" style="padding:20px 0">Carga primero las partidas en Entrenar.</div></div>
+  </div>
 
-<div id="respuesta"></div>
-
-<div id="navButtons">
-
-    <button onclick="anterior()">
-        ← Anterior
-    </button>
-
-    <button onclick="siguiente()">
-        Siguiente →
-    </button>
-
-</div>
-
-</div>
+</div><!-- /.app -->
 
 <script>
+/* ==========================================================
+   DATOS OFICIALES — 59 programas reales Valladolid 2026
+   Fuente: PDF ayto_programas_desglosados.pdf
+========================================================== */
+const PROGRAMAS_OFICIALES = {
+  "111":  "DEUDA PUBLICA",
+  "1301": "DIRECCION DEL AREA DE TRAFICO Y MOVILIDAD",
+  "1302": "DIRECCION DEL AREA DE SALUD PUBLICA Y SEGURIDAD",
+  "1321": "POLICIA MUNICIPAL",
+  "1341": "MOVILIDAD",
+  "1351": "PROTECCION CIVIL",
+  "1361": "PREVENCION Y EXTINCION DE INCENDIOS",
+  "1501": "DIRECCION DEL AREA DE URBANISMO",
+  "1511": "PLANIFICACION Y GESTION DEL URBANISMO",
+  "1513": "LICENCIAS URBANISTICAS",
+  "1532": "PAVIMENTACION DE VIAS PUBLICAS Y OTROS SERVICIOS",
+  "1621": "RECOGIDA DE RESIDUOS",
+  "1623": "TRATAMIENTO DE RESIDUOS",
+  "1631": "LIMPIEZA VIARIA",
+  "1651": "ALUMBRADO PUBLICO",
+  "1701": "DIRECCION DEL AREA DE MEDIO AMBIENTE",
+  "1711": "PARQUES Y JARDINES",
+  "1721": "PROTECCION DEL MEDIO AMBIENTE",
+  "2311": "INTERVENCION SOCIAL",
+  "2312": "INICIATIVAS SOCIALES",
+  "2313": "DIRECCION DEL AREA DE PERSONAS MAYORES",
+  "2314": "CENTRO DE PROGRAMAS JUVENILES",
+  "2315": "POLITICAS DE IGUALDAD",
+  "2412": "FORMACION PARA EL EMPLEO",
+  "3111": "PROTECCION DE LA SALUBRIDAD PUBLICA",
+  "3121": "PREVENCION Y SALUD LABORAL",
+  "3202": "DIRECCION DEL AREA DE EDUCACION Y CULTURA",
+  "3231": "ESCUELAS INFANTILES",
+  "3232": "CONSERVACION Y MANTO. CENTROS EDUCACION INFANTIL",
+  "3261": "SERVICIOS COMPLEMENTARIOS DE EDUCACION",
+  "3321": "BIBLIOTECAS PUBLICAS",
+  "3341": "COORDINACION DE POLITICAS CULTURALES",
+  "3411": "PROMOCION Y FOMENTO DEL DEPORTE",
+  "4301": "DIRECCION DEL AREA DE COMERCIO",
+  "4312": "MERCADOS",
+  "4314": "ACTUACIONES EN MATERIA DE COMERCIO MINORISTA",
+  "4321": "TURISMO",
+  "4322": "DIRECCION DEL AREA DE TURISMO",
+  "4331": "DESARROLLO EMPRESARIAL",
+  "4411": "TRANSPORTE COLECTIVO URBANO DE VIAJEROS",
+  "9121": "ORGANOS DE GOBIERNO",
+  "9200": "DIRECCION DEL AREA DE P. CIUDADANA",
+  "9201": "SECRETARIA GENERAL",
+  "9202": "GESTION DE RECURSOS HUMANOS",
+  "9203": "UNIDAD DE REGIMEN INTERIOR",
+  "9204": "TECNOLOGIAS DE LA INFORMACION Y COMUNICACION",
+  "9205": "IMPRENTA MUNICIPAL",
+  "9206": "ARCHIVO MUNICIPAL",
+  "9207": "GOBIERNO Y RELACIONES",
+  "9209": "DIRECCION DEL AREA DE HACIENDA, PERSONAL Y MOD.",
+  "9231": "INFORMACION, REGISTRO Y GESTION DEL PADRON",
+  "9241": "PARTICIPACION CIUDADANA",
+  "9291": "IMPREVISTOS Y CONTINGENCIAS DE EJECUCION",
+  "9311": "PLANIFICACION ECONOMICO FINANCIERA",
+  "9312": "INTERVENCION GENERAL",
+  "9321": "GESTION DE INGRESOS E INSPECCION",
+  "9331": "GESTION DEL PATRIMONIO",
+  "9332": "MANTENIMIENTO DE EDIFICIOS E INSTALACIONES MP",
+  "9341": "TESORERIA Y RECAUDACION"
+};
 
-let partidas = [];
-let historial = [];
-let indiceHistorial = -1;
-let actual = null;
+const GRUPOS_VA = [
+  { cod:"111", txt:"Deuda publica",                                   programas:["111"] },
+  { cod:"130", txt:"Trafico/movilidad y salud publica (direccion)",   programas:["1301","1302"] },
+  { cod:"132", txt:"Policia Municipal",                               programas:["1321"] },
+  { cod:"134", txt:"Movilidad",                                       programas:["1341"] },
+  { cod:"135", txt:"Proteccion Civil",                                programas:["1351"] },
+  { cod:"136", txt:"Prevencion y extincion de incendios",             programas:["1361"] },
+  { cod:"150", txt:"Urbanismo (direccion)",                           programas:["1501"] },
+  { cod:"151", txt:"Planificacion urbanistica y licencias",           programas:["1511","1513"] },
+  { cod:"153", txt:"Pavimentacion de vias publicas",                  programas:["1532"] },
+  { cod:"162", txt:"Residuos solidos",                                programas:["1621","1623"] },
+  { cod:"163", txt:"Limpieza viaria",                                 programas:["1631"] },
+  { cod:"165", txt:"Alumbrado publico",                               programas:["1651"] },
+  { cod:"170", txt:"Medio ambiente (direccion)",                      programas:["1701"] },
+  { cod:"171", txt:"Parques y jardines",                              programas:["1711"] },
+  { cod:"172", txt:"Proteccion del medio ambiente",                   programas:["1721"] },
+  { cod:"231", txt:"Servicios sociales y bienestar",                  programas:["2311","2312","2313","2314","2315"] },
+  { cod:"241", txt:"Fomento del empleo",                              programas:["2412"] },
+  { cod:"311", txt:"Proteccion de la salubridad publica",             programas:["3111"] },
+  { cod:"312", txt:"Salud laboral",                                   programas:["3121"] },
+  { cod:"320", txt:"Educacion y cultura (direccion)",                 programas:["3202"] },
+  { cod:"323", txt:"Centros educativos infantiles",                   programas:["3231","3232"] },
+  { cod:"326", txt:"Servicios complementarios de educacion",          programas:["3261"] },
+  { cod:"332", txt:"Bibliotecas publicas",                            programas:["3321"] },
+  { cod:"334", txt:"Coordinacion de politicas culturales",            programas:["3341"] },
+  { cod:"341", txt:"Promocion y fomento del deporte",                 programas:["3411"] },
+  { cod:"430", txt:"Comercio (direccion)",                            programas:["4301"] },
+  { cod:"431", txt:"Mercados y comercio minorista",                   programas:["4312","4314"] },
+  { cod:"432", txt:"Turismo",                                         programas:["4321","4322"] },
+  { cod:"433", txt:"Desarrollo empresarial",                          programas:["4331"] },
+  { cod:"441", txt:"Transporte colectivo urbano",                     programas:["4411"] },
+  { cod:"912", txt:"Organos de gobierno",                             programas:["9121"] },
+  { cod:"920", txt:"Administracion general",                          programas:["9200","9201","9202","9203","9204","9205","9206","9207","9209"] },
+  { cod:"923", txt:"Informacion, registro y padron",                  programas:["9231"] },
+  { cod:"924", txt:"Participacion ciudadana",                         programas:["9241"] },
+  { cod:"929", txt:"Imprevistos y contingencias",                     programas:["9291"] },
+  { cod:"931", txt:"Planificacion economico-financiera e intervencion", programas:["9311","9312"] },
+  { cod:"932", txt:"Gestion de ingresos e inspeccion",                programas:["9321"] },
+  { cod:"933", txt:"Gestion del patrimonio y mantenimiento",          programas:["9331","9332"] },
+  { cod:"934", txt:"Tesoreria y recaudacion",                         programas:["9341"] }
+];
 
-// =====================================
+/* ==========================================================
+   ESTADO GLOBAL
+========================================================== */
+let partidas = [], cola = [], historial = [], indiceHistorial = -1;
+let actual = null, mostrado = false, modoActual = 'spaced', partidasFiltradas = [];
+let sesion = { vistas:0, aciertos:0, fallos:0 };
+let progreso = {};
 
-async function cargarJSON(){
-
-    const response = await fetch(
-        'partidas_presupuesto_valladolid_2026_MASTER.json'
-    );
-
-    partidas = await response.json();
-
-    siguiente();
+/* ==========================================================
+   TABS
+========================================================== */
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'progreso') actualizarProgreso();
+  if (name === 'eha')      renderEHA();
 }
 
-// =====================================
-
-function mostrarPartida(partida){
-
-    actual = partida;
-
-    document.getElementById("codigo").innerText =
-        partida.codigo;
-
-    document.getElementById("respuesta").style.display =
-        "none";
-
-    document.getElementById("navButtons").style.display =
-        "none";
+/* ==========================================================
+   PERSISTENCIA
+========================================================== */
+function cargarProgreso() {
+  try { const s = localStorage.getItem('presupuesto_va_v2'); if (s) progreso = JSON.parse(s); } catch(e) { progreso = {}; }
+}
+function guardarProgreso() {
+  try { localStorage.setItem('presupuesto_va_v2', JSON.stringify(progreso)); } catch(e) {}
+}
+function resetProgreso() {
+  if (!confirm('Seguro que quieres borrar todo el progreso guardado?')) return;
+  progreso = {};
+  guardarProgreso();
+  actualizarProgreso();
+  aplicarFiltro();
 }
 
-// =====================================
+/* ==========================================================
+   CARGA JSON
+========================================================== */
+async function init() {
+  cargarProgreso();
+  try {
+    const resp = await fetch('partidas_presupuesto_valladolid_2026_MASTER.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    partidas = await resp.json();
+    if (!Array.isArray(partidas) || !partidas.length) throw new Error('JSON vacio');
+    document.getElementById('loading-msg').style.display = 'none';
+    document.getElementById('main-trainer').style.display = 'block';
+    poblarFiltroProgramas();
+    aplicarFiltro();
+  } catch(e) {
+    document.getElementById('loading-msg').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+    console.error(e);
+  }
+}
 
-function siguiente(){
+/* ==========================================================
+   FILTRO POR PROGRAMA
+========================================================== */
+function poblarFiltroProgramas() {
+  const presentes = new Set();
+  partidas.forEach(p => {
+    const cod = String(p.programas?.programa?.codigo || '').trim();
+    if (cod) presentes.add(cod);
+  });
+  const sel = document.getElementById('filtro-prog');
+  GRUPOS_VA.forEach(g => {
+    const progsEnJSON = g.programas.filter(c => presentes.has(c));
+    if (!progsEnJSON.length) return;
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = g.cod + ' - ' + g.txt;
+    progsEnJSON.forEach(cod => {
+      const o = document.createElement('option');
+      o.value = cod;
+      o.textContent = cod + ' - ' + (PROGRAMAS_OFICIALES[cod] || cod);
+      optgroup.appendChild(o);
+    });
+    sel.appendChild(optgroup);
+  });
+}
 
-    // si estamos navegando historial hacia atrás
-    // reutilizamos el siguiente existente
+function aplicarFiltro() {
+  const prog = document.getElementById('filtro-prog').value;
+  modoActual  = document.getElementById('modo-select').value;
+  let base = prog
+    ? partidas.filter(p => String(p.programas?.programa?.codigo || '').trim() === prog)
+    : [...partidas];
+  if (modoActual === 'weak') {
+    const falladas = base.filter(p => (progreso[p.codigo]?.fallos||0) > 0 && (progreso[p.codigo]?.aciertos||0) < 2);
+    partidasFiltradas = falladas.length ? falladas : base;
+  } else {
+    partidasFiltradas = base;
+  }
+  construirCola();
+  historial = []; indiceHistorial = -1;
+  siguiente();
+}
 
-    if(indiceHistorial < historial.length - 1){
+/* ==========================================================
+   COLA — Fisher-Yates + Repeticion espaciada
+========================================================== */
+function fisherYates(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-        indiceHistorial++;
+function intervaloMs(aciertos) {
+  const DIAS = [0, 1, 3, 7, 14, 30, 60, 120];
+  return DIAS[Math.min(aciertos, DIAS.length - 1)] * 86400000;
+}
 
-        mostrarPartida(historial[indiceHistorial]);
+function construirCola() {
+  if (modoActual === 'spaced') {
+    const ahora = Date.now();
+    const vencidas = [], futuras = [];
+    partidasFiltradas.forEach(p => {
+      const pr = progreso[p.codigo] || {};
+      const proxima = (pr.ultimaVez || 0) + intervaloMs(pr.aciertos || 0);
+      if (proxima <= ahora) vencidas.push(p);
+      else futuras.push({ p, proxima });
+    });
+    futuras.sort((a, b) => a.proxima - b.proxima);
+    cola = [...fisherYates(vencidas), ...futuras.map(x => x.p)];
+  } else {
+    cola = fisherYates(partidasFiltradas);
+  }
+}
 
-        return;
-    }
-
-    const randomIndex = Math.floor(
-        Math.random() * partidas.length
-    );
-
-    const partida = partidas[randomIndex];
-
-    historial.push(partida);
-
+/* ==========================================================
+   NAVEGACION
+========================================================== */
+function siguiente() {
+  if (indiceHistorial < historial.length - 1) {
     indiceHistorial++;
-
-    mostrarPartida(partida);
+    mostrarPartida(historial[indiceHistorial], false);
+    return;
+  }
+  if (!cola.length) construirCola();
+  const p = cola.shift();
+  historial.push(p);
+  indiceHistorial++;
+  mostrarPartida(p, true);
 }
 
-// =====================================
+function anterior() {
+  if (indiceHistorial <= 0) return;
+  indiceHistorial--;
+  mostrarPartida(historial[indiceHistorial], false);
+}
 
-function anterior(){
+function mostrarPartida(p, esNueva) {
+  actual = p; mostrado = false;
+  if (esNueva) {
+    sesion.vistas++;
+    if (!progreso[p.codigo]) progreso[p.codigo] = { aciertos:0, fallos:0, ultimaVez:0 };
+    progreso[p.codigo].ultimaVez = Date.now();
+    guardarProgreso();
+  }
+  document.getElementById('q-codigo').textContent = p.codigo;
+  const pr = progreso[p.codigo] || {};
+  document.getElementById('q-info').textContent =
+    'Aciertos: ' + (pr.aciertos||0) + '  \u00b7  Fallos: ' + (pr.fallos||0);
+  const niveles = ['Nueva', 'Nivel 1', 'Nivel 2', 'Nivel 3', 'Dominada'];
+  document.getElementById('q-nivel').textContent = niveles[Math.min(pr.aciertos||0, 4)];
+  document.getElementById('answer-card').className = 'answer-card';
+  document.getElementById('btn-mostrar-row').style.display = 'flex';
+  document.getElementById('btn-valorar-row').style.display = 'none';
+  document.getElementById('nav-info').textContent =
+    cola.length ? cola.length + ' en cola' : 'Cola completada \u2013 repasando';
+  actualizarStats();
+}
 
-    if(indiceHistorial <= 0){
-        return;
+/* ==========================================================
+   RESPUESTA
+========================================================== */
+function mostrarRespuesta() {
+  mostrado = true;
+  const p = actual, ec = p.economica || {};
+  const fila = obj => !obj ? '' :
+    '<div class="answer-row"><span class="answer-code">' + esc(obj.codigo||'') + '</span>' +
+    '<span class="answer-text">' + esc(obj.texto||'') + '</span></div>';
+  document.getElementById('answer-card').innerHTML =
+    '<div class="answer-section"><div class="answer-title">Organica</div>' + fila(p.organica) + '</div>' +
+    '<hr class="answer-divider">' +
+    '<div class="answer-section"><div class="answer-title">Clasificacion por programas</div>' +
+      fila(p.programas?.area_gasto) + fila(p.programas?.politica_gasto) +
+      fila(p.programas?.grupo_programa) + fila(p.programas?.programa) +
+    '</div>' +
+    '<hr class="answer-divider">' +
+    '<div class="answer-section"><div class="answer-title">Economica</div>' +
+      fila(ec.capitulo) + fila(ec.articulo) + fila(ec.concepto) +
+      (ec.subconcepto ? fila(ec.subconcepto) : '') +
+    '</div>';
+  document.getElementById('answer-card').className = 'answer-card shown';
+  document.getElementById('btn-mostrar-row').style.display = 'none';
+  document.getElementById('btn-valorar-row').style.display = 'flex';
+}
+
+/* ==========================================================
+   VALORACION
+========================================================== */
+function valorar(acierto) {
+  if (!actual) return;
+  if (!progreso[actual.codigo]) progreso[actual.codigo] = { aciertos:0, fallos:0, ultimaVez:Date.now() };
+  if (acierto) {
+    progreso[actual.codigo].aciertos++;
+    sesion.aciertos++;
+  } else {
+    progreso[actual.codigo].fallos++;
+    sesion.fallos++;
+    if (modoActual === 'spaced') {
+      const pos = Math.min(5, Math.floor(cola.length * 0.3));
+      cola.splice(pos, 0, actual);
     }
-
-    indiceHistorial--;
-
-    mostrarPartida(historial[indiceHistorial]);
+  }
+  guardarProgreso();
+  actualizarStats();
+  siguiente();
 }
 
-// =====================================
-
-function verRespuesta(){
-
-    document.getElementById("respuesta").style.display =
-        "block";
-
-    document.getElementById("navButtons").style.display =
-        "block";
-
-    document.getElementById("respuesta").innerHTML = `
-
-        <h2>ORGÁNICA</h2>
-
-        <p>
-            <strong>${actual.organica.codigo}</strong>
-            →
-            ${actual.organica.texto}
-        </p>
-
-        <hr>
-
-        <h2>PROGRAMAS</h2>
-
-        <p>
-            <strong>${actual.programas.area_gasto.codigo}</strong>
-            →
-            ${actual.programas.area_gasto.texto}
-        </p>
-
-        <p>
-            <strong>${actual.programas.politica_gasto.codigo}</strong>
-            →
-            ${actual.programas.politica_gasto.texto}
-        </p>
-
-        <p>
-            <strong>${actual.programas.grupo_programa.codigo}</strong>
-            →
-            ${actual.programas.grupo_programa.texto}
-        </p>
-
-        <p>
-            <strong>${actual.programas.programa.codigo}</strong>
-            →
-            ${actual.programas.programa.texto}
-        </p>
-
-        <hr>
-
-        <h2>ECONÓMICA</h2>
-
-        <p>
-            <strong>${actual.economica.capitulo.codigo}</strong>
-            →
-            ${actual.economica.capitulo.texto}
-        </p>
-
-        <p>
-            <strong>${actual.economica.articulo.codigo}</strong>
-            →
-            ${actual.economica.articulo.texto}
-        </p>
-
-        <p>
-            <strong>${actual.economica.concepto.codigo}</strong>
-            →
-            ${actual.economica.concepto.texto}
-        </p>
-
-        ${actual.economica.subconcepto ? `
-            <p>
-                <strong>${actual.economica.subconcepto.codigo}</strong>
-                →
-                ${actual.economica.subconcepto.texto}
-            </p>
-        ` : ''}
-
-    `;
+/* ==========================================================
+   STATS SESION
+========================================================== */
+function actualizarStats() {
+  document.getElementById('stat-vistas').textContent   = sesion.vistas;
+  document.getElementById('stat-aciertos').textContent = sesion.aciertos;
+  document.getElementById('stat-fallos').textContent   = sesion.fallos;
+  document.getElementById('stat-cola').textContent     = cola.length || '-';
 }
 
-// =====================================
+/* ==========================================================
+   PESTAÑA PROGRESO
+========================================================== */
+function actualizarProgreso() {
+  const total     = partidas.length;
+  const vistas    = partidas.filter(p =>  progreso[p.codigo]).length;
+  const dominadas = partidas.filter(p => (progreso[p.codigo]?.aciertos||0) >= 2).length;
+  const repasar   = partidas.filter(p => (progreso[p.codigo]?.fallos||0) > 0 && (progreso[p.codigo]?.aciertos||0) < 2).length;
+  document.getElementById('p-total').textContent     = total;
+  document.getElementById('p-vistas').textContent    = vistas;
+  document.getElementById('p-dominadas').textContent = dominadas;
+  document.getElementById('p-repasar').textContent   = repasar;
+  const pv = total > 0 ? Math.round(vistas    / total * 100) : 0;
+  const pd = total > 0 ? Math.round(dominadas / total * 100) : 0;
+  document.getElementById('prog-vistas-pct').textContent = pv + '%';
+  document.getElementById('prog-dom-pct').textContent    = pd + '%';
+  document.getElementById('prog-vistas-bar').style.width = pv + '%';
+  document.getElementById('prog-dom-bar').style.width    = pd + '%';
 
-cargarJSON();
+  const porProg = {};
+  partidas.forEach(p => {
+    const cod = String(p.programas?.programa?.codigo || '').trim();
+    if (!cod) return;
+    if (!porProg[cod]) porProg[cod] = { total:0, vistas:0, dominadas:0, repasar:0 };
+    porProg[cod].total++;
+    const pr = progreso[p.codigo];
+    if (pr) {
+      porProg[cod].vistas++;
+      if ((pr.aciertos||0) >= 2) porProg[cod].dominadas++;
+      if ((pr.fallos||0) > 0 && (pr.aciertos||0) < 2) porProg[cod].repasar++;
+    }
+  });
 
+  let html = '';
+  GRUPOS_VA.forEach(g => {
+    const progsConDatos = g.programas.filter(c => porProg[c]);
+    if (!progsConDatos.length) return;
+    html += '<div class="section-header" style="margin-top:20px">' + esc(g.cod) + ' \u2013 ' + esc(g.txt) + '</div>';
+    html += '<table class="data-table"><thead><tr><th>Programa</th><th>Partidas</th><th>Vistas</th><th>Dominadas</th><th>Repasar</th></tr></thead><tbody>';
+    progsConDatos.forEach(cod => {
+      const d   = porProg[cod];
+      const pct = d.total > 0 ? Math.round(d.dominadas / d.total * 100) : 0;
+      html += '<tr>' +
+        '<td><strong>' + esc(cod) + '</strong> <span style="color:var(--text-2);font-size:12px">' + esc(PROGRAMAS_OFICIALES[cod]||cod) + '</span></td>' +
+        '<td>' + d.total + '</td>' +
+        '<td>' + d.vistas + '</td>' +
+        '<td>' + d.dominadas + ' <span style="color:var(--text-3);font-size:11px">(' + pct + '%)</span></td>' +
+        '<td>' + (d.repasar > 0 ? '<span style="color:var(--warn)">' + d.repasar + '</span>' : '-') + '</td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+  });
+  document.getElementById('prog-programas').innerHTML =
+    html || '<p style="color:var(--text-3);font-size:13px;padding:12px 0">Aun no hay progreso registrado.</p>';
+}
+
+/* ==========================================================
+   PESTAÑA PROGRAMAS
+   Verificacion contra los 59 programas reales de Valladolid
+========================================================== */
+function renderEHA() {
+  if (!partidas.length) {
+    document.getElementById('eha-content').innerHTML =
+      '<div class="info-msg">Carga primero las partidas en la pestana <strong>Entrenar</strong>.</div>';
+    return;
+  }
+
+  const progsEnJSON = new Set();
+  const partidasPorProg = {};
+  partidas.forEach(p => {
+    const cod = String(p.programas?.programa?.codigo || '').trim();
+    if (!cod) return;
+    progsEnJSON.add(cod);
+    partidasPorProg[cod] = (partidasPorProg[cod] || 0) + 1;
+  });
+
+  const totalOficiales = Object.keys(PROGRAMAS_OFICIALES).length;
+  const presentes      = Object.keys(PROGRAMAS_OFICIALES).filter(c => progsEnJSON.has(c)).length;
+  const ausentes       = totalOficiales - presentes;
+  const pct            = Math.round(presentes / totalOficiales * 100);
+  const extras         = [...progsEnJSON].filter(c => !PROGRAMAS_OFICIALES[c]).sort();
+
+  let html =
+    '<div class="stats-row">' +
+      '<div class="stat-card"><div class="s-label">Programas oficiales</div><div class="s-val">' + totalOficiales + '</div></div>' +
+      '<div class="stat-card"><div class="s-label">En tu JSON</div><div class="s-val good">' + presentes + '</div></div>' +
+      '<div class="stat-card"><div class="s-label">Ausentes</div><div class="s-val ' + (ausentes ? 'warn' : 'good') + '">' + ausentes + '</div></div>' +
+      '<div class="stat-card"><div class="s-label">Cobertura</div><div class="s-val">' + pct + '%</div></div>' +
+    '</div>' +
+    '<div class="progress-section">' +
+      '<div class="progress-label"><strong>Cobertura del JSON respecto al presupuesto oficial</strong><span>' + pct + '%</span></div>' +
+      '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>' +
+    '</div>';
+
+  // Programas ausentes (bloque rojo si los hay)
+  const listaAusentes = Object.entries(PROGRAMAS_OFICIALES).filter(([c]) => !progsEnJSON.has(c));
+  if (listaAusentes.length) {
+    html += '<div class="section-header" style="color:var(--danger)">Programas ausentes en el JSON (' + listaAusentes.length + ')</div>';
+    html += '<table class="data-table"><thead><tr><th>Codigo</th><th>Programa</th><th>Estado</th></tr></thead><tbody>';
+    listaAusentes.forEach(([cod, nom]) => {
+      html += '<tr><td><code style="font-family:var(--mono);font-size:12px">' + esc(cod) + '</code></td>' +
+        '<td>' + esc(nom) + '</td><td><span class="badge missing">ausente</span></td></tr>';
+    });
+    html += '</tbody></table>';
+  }
+
+  // Tabla completa agrupada
+  html += '<div class="section-header">Todos los programas por grupo</div>';
+  GRUPOS_VA.forEach(g => {
+    const todosPresentes  = g.programas.every(c => progsEnJSON.has(c));
+    const algunoPresente  = g.programas.some(c  => progsEnJSON.has(c));
+    const estadoGrupo     = todosPresentes ? 'ok' : (algunoPresente ? 'partial' : 'missing');
+    const labelGrupo      = todosPresentes ? 'completo' : (algunoPresente ? 'parcial' : 'ausente');
+
+    html += '<table class="data-table" style="margin-bottom:16px">' +
+      '<thead><tr><th colspan="3" style="background:var(--surface-2)">' +
+        '<span style="font-size:13px;color:var(--text)">' + esc(g.cod) + ' \u2013 ' + esc(g.txt) + '</span>' +
+        ' <span class="badge ' + estadoGrupo + '" style="margin-left:8px">' + labelGrupo + '</span>' +
+      '</th></tr>' +
+      '<tr><th>Programa</th><th>Nombre</th><th>Partidas en JSON</th></tr></thead><tbody>';
+
+    g.programas.forEach(cod => {
+      const tiene = progsEnJSON.has(cod);
+      const n     = partidasPorProg[cod] || 0;
+      html += '<tr>' +
+        '<td><code style="font-family:var(--mono);font-size:12px">' + esc(cod) + '</code></td>' +
+        '<td>' + esc(PROGRAMAS_OFICIALES[cod] || cod) + '</td>' +
+        '<td>' + (tiene
+          ? '<span class="badge ok">' + n + ' partidas</span>'
+          : '<span class="badge missing">ausente</span>') + '</td></tr>';
+    });
+    html += '</tbody></table>';
+  });
+
+  // Extras en el JSON no reconocidos
+  if (extras.length) {
+    html += '<div class="section-header">Programas en el JSON no encontrados en el PDF oficial (' + extras.length + ')</div>';
+    html += '<table class="data-table"><thead><tr><th>Codigo</th><th>Partidas</th></tr></thead><tbody>';
+    extras.forEach(cod => {
+      html += '<tr><td><code style="font-family:var(--mono);font-size:12px">' + esc(cod) + '</code></td>' +
+        '<td>' + (partidasPorProg[cod] || 0) + '</td></tr>';
+    });
+    html += '</tbody></table>';
+  }
+
+  document.getElementById('eha-content').innerHTML = html;
+}
+
+/* ==========================================================
+   TECLADO
+========================================================== */
+document.addEventListener('keydown', e => {
+  if (['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if (e.code === 'Space' || e.key === ' ') {
+    e.preventDefault();
+    if (!mostrado && actual) mostrarRespuesta();
+  } else if (e.code === 'ArrowRight') {
+    if (mostrado) valorar(true); else if (actual) siguiente();
+  } else if (e.code === 'ArrowLeft') {
+    if (mostrado) valorar(false); else anterior();
+  } else if (e.code === 'KeyS') {
+    siguiente();
+  }
+});
+
+/* ==========================================================
+   UTILIDADES
+========================================================== */
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ==========================================================
+   ARRANQUE
+========================================================== */
+init();
 </script>
-
 </body>
 </html>
