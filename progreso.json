@@ -335,8 +335,18 @@
     "ultimaVez": 1780526583449
   },
   "10/2312/120": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1780526587747
+  },
+  "05/4312/221.00": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780526596705
+  },
+  "04/9202/227.00": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780526602199
   }
 }
