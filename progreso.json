@@ -1,4 +1,39 @@
 {
+  "11/1621/121.00": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780383345496
+  },
+  "05/4312/213.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780383447471
+  },
+  "01/9121/489": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780383484695
+  },
+  "02/1501/749": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780383506751
+  },
+  "02/9332/221": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780383528575
+  },
+  "10/2312/480.77": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1780383539887
+  },
+  "10/2311/226.00": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1780468276124
+  },
   "10/2314/213": {
     "aciertos": 1,
     "fallos": 0,
@@ -108,5 +143,15 @@
     "aciertos": 0,
     "fallos": 0,
     "ultimaVez": 1780429471401
+  },
+  "08/1651/221.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780468328863
+  },
+  "02/9331/227.06": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780468384742
   }
 }
