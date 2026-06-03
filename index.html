@@ -459,44 +459,37 @@ async function cargarProgresoGitHub() {
   if (!token) { setSyncStatus('', 'Sin token'); return; }
   setSyncStatus('saving', 'Sincronizando...');
   try {
-    // Forzar no-cache para asegurarnos de leer la ultima version
-    const r = await fetch(GH_API + '?ref=' + GH_BRANCH,
-      { headers: {
-          Authorization: 'token ' + token,
-          Accept: 'application/vnd.github.v3+json'
-        }
-      });
+    // LEER via raw.githubusercontent.com — sin autenticacion, sin problemas CORS
+    // Añadir timestamp para evitar cache del navegador
+    const rawUrl = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_FILE + '?t=' + Date.now();
+    const r = await fetch(rawUrl);
     if (r.status === 404) {
       ghSha = null;
       setSyncStatus('ok', 'Listo (sin progreso previo)');
+      console.log('[GitHub] progreso.json no existe aun en el repo');
       return;
     }
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    const data = await r.json();
-    ghSha = data.sha;
+    const remoto = await r.json();
 
-    // Decodificar base64 correctamente (con soporte UTF-8)
-    const b64 = data.content.replace(/\s/g, '');
-    const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-    const remoto = JSON.parse(new TextDecoder('utf-8').decode(bytes));
-
-    // Merge: tomar el maximo de aciertos/fallos entre local y remoto
+    // Merge: tomar el maximo de aciertos/fallos/ultimaVez entre local y remoto
     let cambios = 0;
-    Object.entries(remoto).forEach(([cod, r]) => {
-      const l = progreso[cod] || {aciertos:0, fallos:0, ultimaVez:0};
+    Object.entries(remoto).forEach(([cod, rv]) => {
+      const lv = progreso[cod] || {aciertos:0, fallos:0, ultimaVez:0};
       const merged = {
-        aciertos:  Math.max(l.aciertos  || 0, r.aciertos  || 0),
-        fallos:    Math.max(l.fallos    || 0, r.fallos    || 0),
-        ultimaVez: Math.max(l.ultimaVez || 0, r.ultimaVez || 0)
+        aciertos:  Math.max(lv.aciertos  || 0, rv.aciertos  || 0),
+        fallos:    Math.max(lv.fallos    || 0, rv.fallos    || 0),
+        ultimaVez: Math.max(lv.ultimaVez || 0, rv.ultimaVez || 0)
       };
-      if (JSON.stringify(merged) !== JSON.stringify(l)) cambios++;
+      if (JSON.stringify(merged) !== JSON.stringify(lv)) cambios++;
       progreso[cod] = merged;
     });
     guardarProgresoLocal();
-    if (cambios > 0) construirCola(); // reconstruir cola con el progreso actualizado
+    if (cambios > 0) construirCola();
     setSyncStatus('ok', 'Sincronizado (' + Object.keys(progreso).length + ' partidas)');
+    console.log('[GitHub] Carga OK, cambios aplicados:', cambios);
   } catch(e) {
-    console.error('Error cargando progreso GitHub:', e);
+    console.error('[GitHub] Error cargando progreso:', e);
     setSyncStatus('error', 'Error al leer: ' + e.message);
   }
 }
@@ -511,20 +504,20 @@ async function guardarProgresoGitHub() {
   guardandoAhora = true;
   setSyncStatus('saving', 'Guardando...');
   try {
-    // Si no tenemos SHA, intentar leerlo primero (el archivo puede existir ya en el repo)
+    // Si no tenemos SHA, obtenerlo via API (solo Authorization, sin Cache-Control)
     if (!ghSha) {
-      console.log('[GitHub] Sin SHA, leyendo antes de escribir...');
-      const rCheck = await fetch(GH_API + '?ref=' + GH_BRANCH,
+      console.log('[GitHub] Sin SHA, consultando API...');
+      const rCheck = await fetch(GH_API,
         { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' } });
       if (rCheck.ok) {
         const dCheck = await rCheck.json();
         ghSha = dCheck.sha;
         console.log('[GitHub] SHA obtenido:', ghSha);
       } else if (rCheck.status === 404) {
-        ghSha = null; // archivo nuevo, no necesita SHA
+        ghSha = null;
         console.log('[GitHub] Archivo nuevo, sin SHA necesario');
       } else {
-        throw new Error('No se pudo leer SHA: HTTP ' + rCheck.status);
+        throw new Error('No se pudo obtener SHA: HTTP ' + rCheck.status);
       }
     }
 
