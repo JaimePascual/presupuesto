@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrenador Presupuestario – Valladolid 2026</title>
+  <title>Entrenador Presupuestario - Valladolid 2026</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -25,26 +25,23 @@
       --radius:     10px;
       --radius-lg:  14px;
       --font:       'Segoe UI', system-ui, -apple-system, sans-serif;
-      --mono:       'Menlo', 'Consolas', monospace;
+      --mono:       'Menlo','Consolas',monospace;
     }
     body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
     .app { max-width: 820px; margin: 0 auto; padding: 24px 16px 48px; }
 
-    /* HEADER */
     .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
     .header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
     .header h1 span { font-weight: 400; color: var(--text-2); font-size: 14px; display: block; margin-top: 2px; }
     .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-    /* SYNC STATUS */
     .sync-status { font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 5px; }
-    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; }
-    .sync-dot.ok      { background: var(--success); }
-    .sync-dot.saving  { background: var(--warn); animation: pulse 0.8s infinite; }
-    .sync-dot.error   { background: var(--danger); }
+    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; transition: background 0.3s; }
+    .sync-dot.ok     { background: var(--success); }
+    .sync-dot.saving { background: var(--warn); animation: pulse 0.8s infinite; }
+    .sync-dot.error  { background: var(--danger); }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* TABS */
     .tabs { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: var(--radius); border: 1px solid var(--border); }
     .tab-btn { padding: 6px 14px; font-size: 13px; font-family: var(--font); border: none; border-radius: calc(var(--radius) - 2px); background: transparent; color: var(--text-2); cursor: pointer; font-weight: 500; transition: background 0.15s, color 0.15s; }
     .tab-btn:hover { background: rgba(0,0,0,0.06); color: var(--text); }
@@ -52,40 +49,39 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* MODAL TOKEN */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 16px; }
     .modal-overlay.hidden { display: none; }
-    .modal { background: var(--surface); border-radius: var(--radius-lg); padding: 28px 24px; max-width: 480px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
-    .modal h2 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-    .modal p  { font-size: 13px; color: var(--text-2); margin-bottom: 14px; line-height: 1.6; }
-    .modal ol { font-size: 13px; color: var(--text-2); margin: 0 0 16px 18px; line-height: 2; }
+    .modal { background: var(--surface); border-radius: var(--radius-lg); padding: 28px 24px; max-width: 500px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
+    .modal h2 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+    .modal p  { font-size: 13px; color: var(--text-2); margin-bottom: 12px; line-height: 1.6; }
+    .modal ol { font-size: 13px; color: var(--text-2); margin: 0 0 16px 20px; line-height: 2.2; }
     .modal ol a { color: var(--accent); }
-    .modal input { width: 100%; padding: 9px 12px; font-size: 13px; font-family: var(--mono); border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface-2); color: var(--text); margin-bottom: 12px; }
-    .modal input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .modal ol code { font-family: var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+    .token-field { display: flex; gap: 8px; margin-bottom: 10px; }
+    .token-field input { flex: 1; padding: 9px 12px; font-size: 13px; font-family: var(--mono); border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface-2); color: var(--text); }
+    .token-field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .modal-err  { font-size: 12px; color: var(--danger); margin-bottom: 10px; min-height: 16px; }
     .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
-    .modal-err { font-size: 12px; color: var(--danger); margin-bottom: 8px; display: none; }
+    .token-saved { font-size: 12px; color: var(--success); background: var(--success-bg); padding: 6px 10px; border-radius: var(--radius); margin-bottom: 10px; display: none; }
 
-    /* STAT CARDS */
     .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 20px; }
     .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
     .stat-card .s-label { font-size: 11px; color: var(--text-3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
     .stat-card .s-val { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
-    .stat-card .s-val.good   { color: var(--success); }
-    .stat-card .s-val.warn   { color: var(--warn); }
+    .stat-card .s-val.good { color: var(--success); }
+    .stat-card .s-val.warn { color: var(--warn); }
 
-    /* FILTER ROW */
     .filter-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
     .filter-row label { font-size: 13px; color: var(--text-2); white-space: nowrap; }
     .filter-row select { font-size: 13px; font-family: var(--font); border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface); color: var(--text); padding: 6px 10px; cursor: pointer; max-width: 260px; }
     .filter-row select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-    /* QUESTION CARD */
     .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; margin-bottom: 12px; min-height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; position: relative; }
     .q-codigo { font-family: var(--mono); font-size: 44px; font-weight: 700; color: var(--text); letter-spacing: 0.03em; word-break: break-all; line-height: 1.1; }
     .q-info   { font-size: 12px; color: var(--text-3); }
     .q-nivel  { position: absolute; top: 12px; right: 14px; font-size: 11px; padding: 3px 8px; border-radius: 99px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
 
-    /* ANSWER CARD */
     .answer-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 12px; display: none; }
     .answer-card.shown { display: block; }
     .answer-section { margin-bottom: 14px; }
@@ -96,7 +92,6 @@
     .answer-text { font-size: 14px; color: var(--text); line-height: 1.4; }
     .answer-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
 
-    /* BUTTONS */
     .btn { padding: 9px 20px; font-size: 14px; font-family: var(--font); border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface); color: var(--text); cursor: pointer; font-weight: 500; transition: background 0.12s, transform 0.08s; }
     .btn:hover { background: var(--surface-2); }
     .btn:active { transform: scale(0.98); }
@@ -112,7 +107,6 @@
     .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
     .nav-info { font-size: 12px; color: var(--text-3); }
 
-    /* PROGRESS */
     .progress-section { margin-bottom: 16px; }
     .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
     .progress-label strong { color: var(--text); }
@@ -120,20 +114,17 @@
     .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
     .progress-bar-fill.dom { background: #2d8a5a; }
 
-    /* TABLES */
     .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
     .data-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border-md); }
     .data-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
     .data-table tr:last-child td { border-bottom: none; }
     .data-table tr:hover td { background: var(--surface-2); }
 
-    /* BADGES */
     .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
     .badge.ok      { background: var(--success-bg); color: var(--success); }
     .badge.missing { background: var(--danger-bg);  color: var(--danger);  }
     .badge.partial { background: var(--warn-bg);    color: var(--warn);    }
 
-    /* MISC */
     .section-header { font-size: 13px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.08em; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .info-msg { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; font-size: 13px; color: var(--text-2); margin-bottom: 16px; line-height: 1.5; }
     .error-msg { background: var(--danger-bg); border: 1px solid rgba(176,48,48,0.2); border-radius: var(--radius); padding: 16px; color: var(--danger); font-size: 14px; margin-bottom: 16px; line-height: 1.6; }
@@ -149,22 +140,25 @@
 <body>
 
 <!-- MODAL TOKEN -->
-<div class="modal-overlay" id="modal-token">
+<div class="modal-overlay hidden" id="modal-token">
   <div class="modal">
     <h2>Configura tu token de GitHub</h2>
-    <p>Para sincronizar el progreso entre dispositivos necesitas un token de acceso personal de GitHub. Solo hay que hacerlo una vez por dispositivo.</p>
+    <p>Necesario para sincronizar el progreso entre dispositivos. Solo hay que introducirlo una vez por navegador.</p>
     <ol>
       <li>Ve a <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a></li>
-      <li>Nombre: <strong>entrenador-presupuesto</strong></li>
-      <li>Expiration: <strong>No expiration</strong></li>
-      <li>Marca el permiso: <strong>repo</strong> (primer checkbox grande)</li>
+      <li>Nombre: <code>entrenador-presupuesto</code></li>
+      <li>Expiration: <code>No expiration</code></li>
+      <li>Marca el permiso: <code>repo</code> (el primer checkbox grande)</li>
       <li>Pulsa <strong>Generate token</strong> y copia el resultado</li>
     </ol>
-    <div class="modal-err" id="modal-err">Token invalido o sin permisos. Comprueba que marcaste el permiso repo.</div>
-    <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+    <div class="token-saved" id="token-saved">Token guardado correctamente.</div>
+    <div class="token-field">
+      <input type="text" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" spellcheck="false" autocomplete="off" />
+      <button class="btn primary" onclick="guardarToken()">Guardar</button>
+    </div>
+    <div class="modal-err" id="modal-err"></div>
     <div class="modal-btns">
-      <button class="btn ghost" onclick="cerrarModal()">Cancelar (solo local)</button>
-      <button class="btn primary" onclick="guardarToken()">Guardar token</button>
+      <button class="btn ghost" onclick="cerrarModal()">Usar solo en local (sin sync)</button>
     </div>
   </div>
 </div>
@@ -175,11 +169,11 @@
       <span>Valladolid 2026 &middot; Tecnico Medio</span>
     </h1>
     <div class="header-right">
-      <div class="sync-status" id="sync-status">
+      <div class="sync-status">
         <div class="sync-dot" id="sync-dot"></div>
-        <span id="sync-txt">Sin token</span>
+        <span id="sync-txt">Iniciando...</span>
       </div>
-      <button class="btn ghost" style="font-size:12px;padding:5px 10px" onclick="abrirModal()">Token</button>
+      <button class="btn ghost" style="font-size:11px;padding:4px 10px" onclick="abrirModal()">&#9881; Token</button>
       <div class="tabs">
         <button class="tab-btn active" onclick="showTab('entrenar',this)">Entrenar</button>
         <button class="tab-btn" onclick="showTab('progreso',this)">Progreso</button>
@@ -210,7 +204,7 @@
     <div id="error-msg" class="error-msg" style="display:none">
       <strong>No se pudo cargar el archivo JSON.</strong><br>
       Asegurate de que <code>partidas_presupuesto_valladolid_2026_MASTER.json</code> esta en la misma carpeta.<br><br>
-      Si usas <code>file://</code>, lanza: <code>python3 -m http.server 8000</code>
+      Si usas <code>file://</code> localmente: <code>python3 -m http.server 8000</code>
     </div>
     <div id="main-trainer" style="display:none">
       <div class="question-card">
@@ -232,7 +226,10 @@
         <button class="btn ghost" onclick="siguiente()">Saltar <kbd>S</kbd></button>
       </div>
       <div class="key-hint">
-        <kbd>Espacio</kbd> mostrar &nbsp;&middot;&nbsp; <kbd>Der</kbd> la sabia &nbsp;&middot;&nbsp; <kbd>Izq</kbd> no la sabia &nbsp;&middot;&nbsp; <kbd>S</kbd> saltar
+        <kbd>Espacio</kbd> mostrar &nbsp;&middot;&nbsp;
+        <kbd>Der</kbd> la sabia &nbsp;&middot;&nbsp;
+        <kbd>Izq</kbd> no la sabia &nbsp;&middot;&nbsp;
+        <kbd>S</kbd> saltar
       </div>
     </div>
   </div>
@@ -269,8 +266,7 @@
     </div>
     <div id="eha-content"><div class="loading" style="padding:20px 0">Carga primero las partidas en Entrenar.</div></div>
   </div>
-
-</div><!-- /.app -->
+</div>
 
 <script>
 /* ============================================================
@@ -281,9 +277,11 @@ const GH_REPO   = 'presupuesto';
 const GH_FILE   = 'progreso.json';
 const GH_BRANCH = 'main';
 const GH_API    = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+const LS_TOKEN  = 'gh_token_presupuesto_v2';  // clave localStorage para el token
+const LS_PROG   = 'presupuesto_va_v3';         // clave localStorage para el progreso
 
 /* ============================================================
-   DATOS OFICIALES — 59 programas reales Valladolid 2026
+   DATOS OFICIALES
 ============================================================ */
 const PROGRAMAS_OFICIALES = {
   "111":"DEUDA PUBLICA","1301":"DIRECCION AREA TRAFICO Y MOVILIDAD",
@@ -313,7 +311,6 @@ const PROGRAMAS_OFICIALES = {
   "9331":"GESTION DEL PATRIMONIO","9332":"MANTENIMIENTO DE EDIFICIOS E INSTALACIONES",
   "9341":"TESORERIA Y RECAUDACION"
 };
-
 const GRUPOS_VA = [
   {cod:"111",txt:"Deuda publica",programas:["111"]},
   {cod:"130",txt:"Trafico/movilidad y salud publica",programas:["1301","1302"]},
@@ -357,51 +354,72 @@ const GRUPOS_VA = [
 ];
 
 /* ============================================================
-   ESTADO GLOBAL
+   TOKEN — guardar/leer con clave nueva para evitar conflictos
 ============================================================ */
-let partidas = [], cola = [], historial = [], indiceHistorial = -1;
-let actual = null, mostrado = false, modoActual = 'spaced', partidasFiltradas = [];
-let sesion = {vistas:0, aciertos:0, fallos:0};
-let progreso = {};
-let ghSha = null;          // SHA del archivo progreso.json en GitHub (necesario para actualizar)
-let pendientesGuardado = 0;// contador de valoraciones sin guardar
-let guardandoAhora = false;// evita guardados solapados
+function getToken() {
+  try {
+    const t = localStorage.getItem(LS_TOKEN);
+    return (t && t.trim()) ? t.trim() : '';
+  } catch(e) { return ''; }
+}
+function setToken(t) {
+  try {
+    const clean = (t || '').trim();
+    localStorage.setItem(LS_TOKEN, clean);
+    const check = localStorage.getItem(LS_TOKEN);
+    if (check !== clean) throw new Error('verificacion fallida');
+    console.log('[Token] Guardado OK, longitud:', clean.length);
+  } catch(e) {
+    console.error('[Token] Error al guardar:', e);
+    alert('Tu navegador no pudo guardar el token. Comprueba que no usas modo incognito con almacenamiento bloqueado.');
+  }
+}
+function borrarToken() {
+  try { localStorage.removeItem(LS_TOKEN); } catch(e) {}
+}
 
 /* ============================================================
    MODAL TOKEN
 ============================================================ */
 function abrirModal() {
+  const t = getToken();
+  // Mostrar el token completo (es el propio archivo del usuario, no hay riesgo de exposicion)
+  document.getElementById('token-input').value = t || '';
+  document.getElementById('modal-err').textContent = '';
+  document.getElementById('token-saved').style.display = 'none';
   document.getElementById('modal-token').classList.remove('hidden');
-  document.getElementById('token-input').value = getToken() || '';
-  document.getElementById('modal-err').style.display = 'none';
 }
 function cerrarModal() {
   document.getElementById('modal-token').classList.add('hidden');
 }
-function getToken()  { try { return localStorage.getItem('gh_token_presupuesto') || ''; } catch(e) { return ''; } }
-function setToken(t) { try { localStorage.setItem('gh_token_presupuesto', t); } catch(e) {} }
-
 async function guardarToken() {
   const t = document.getElementById('token-input').value.trim();
-  if (!t) return;
-  // Verificar token haciendo una llamada de prueba
+  if (!t || t.length < 10) {
+    document.getElementById('modal-err').textContent = 'Introduce un token valido (debe tener al menos 10 caracteres).';
+    return;
+  }
   setSyncStatus('saving', 'Verificando...');
+  document.getElementById('modal-err').textContent = '';
   try {
-    const r = await fetch('https://api.github.com/user', { headers: { Authorization: 'token ' + t } });
-    if (!r.ok) throw new Error('invalid');
+    const r = await fetch('https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO,
+      { headers: { Authorization: 'token ' + t, Accept: 'application/vnd.github.v3+json' } });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     setToken(t);
-    cerrarModal();
+    document.getElementById('token-saved').style.display = 'block';
+    document.getElementById('modal-err').textContent = '';
     setSyncStatus('ok', 'Token OK');
-    // Intentar cargar progreso de GitHub con el nuevo token
-    await cargarProgresoGitHub();
+    setTimeout(cerrarModal, 1200);
+    // Si ya hay partidas cargadas, sincronizar ahora
+    if (partidas.length) await cargarProgresoGitHub();
   } catch(e) {
-    document.getElementById('modal-err').style.display = 'block';
+    document.getElementById('modal-err').textContent = 'Token invalido o sin acceso al repositorio. Comprueba que marcaste el permiso repo.';
+    borrarToken();
     setSyncStatus('error', 'Token invalido');
   }
 }
 
 /* ============================================================
-   SYNC STATUS UI
+   SYNC STATUS
 ============================================================ */
 function setSyncStatus(estado, texto) {
   document.getElementById('sync-dot').className = 'sync-dot ' + estado;
@@ -409,46 +427,84 @@ function setSyncStatus(estado, texto) {
 }
 
 /* ============================================================
+   ESTADO GLOBAL
+============================================================ */
+let partidas = [], cola = [], historial = [], indiceHistorial = -1;
+let actual = null, mostrado = false, modoActual = 'spaced', partidasFiltradas = [];
+let sesion = {vistas:0, aciertos:0, fallos:0};
+let progreso = {};
+let ghSha = null;
+let pendientesGuardado = 0;
+let guardandoAhora = false;
+
+/* ============================================================
+   PERSISTENCIA LOCAL
+============================================================ */
+function cargarProgresoLocal() {
+  try {
+    const s = localStorage.getItem(LS_PROG);
+    if (s) { progreso = JSON.parse(s); }
+  } catch(e) { progreso = {}; }
+}
+function guardarProgresoLocal() {
+  try { localStorage.setItem(LS_PROG, JSON.stringify(progreso)); } catch(e) {}
+}
+
+/* ============================================================
    GITHUB — LEER progreso.json
+   FIX: usar TextDecoder para decodificar base64 con UTF-8
 ============================================================ */
 async function cargarProgresoGitHub() {
   const token = getToken();
   if (!token) { setSyncStatus('', 'Sin token'); return; }
   setSyncStatus('saving', 'Sincronizando...');
   try {
-    const r = await fetch(GH_API + '?ref=' + GH_BRANCH + '&t=' + Date.now(),
-      { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' } });
+    // Forzar no-cache para asegurarnos de leer la ultima version
+    const r = await fetch(GH_API + '?ref=' + GH_BRANCH,
+      { headers: {
+          Authorization: 'token ' + token,
+          Accept: 'application/vnd.github.v3+json',
+          'Cache-Control': 'no-cache'
+        }
+      });
     if (r.status === 404) {
-      // El archivo no existe aun, empezamos con progreso vacio
       ghSha = null;
-      setSyncStatus('ok', 'Listo (nuevo)');
+      setSyncStatus('ok', 'Listo (sin progreso previo)');
       return;
     }
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     ghSha = data.sha;
-    const contenido = JSON.parse(atob(data.content.replace(/\n/g, '')));
-    // Merge: GitHub gana en aciertos/fallos (toma el maximo de cada campo)
-    Object.entries(contenido).forEach(([cod, remoto]) => {
-      const local = progreso[cod] || {aciertos:0, fallos:0, ultimaVez:0};
-      progreso[cod] = {
-        aciertos:  Math.max(local.aciertos  || 0, remoto.aciertos  || 0),
-        fallos:    Math.max(local.fallos    || 0, remoto.fallos    || 0),
-        ultimaVez: Math.max(local.ultimaVez || 0, remoto.ultimaVez || 0)
+
+    // Decodificar base64 correctamente (con soporte UTF-8)
+    const b64 = data.content.replace(/\s/g, '');
+    const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const remoto = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+
+    // Merge: tomar el maximo de aciertos/fallos entre local y remoto
+    let cambios = 0;
+    Object.entries(remoto).forEach(([cod, r]) => {
+      const l = progreso[cod] || {aciertos:0, fallos:0, ultimaVez:0};
+      const merged = {
+        aciertos:  Math.max(l.aciertos  || 0, r.aciertos  || 0),
+        fallos:    Math.max(l.fallos    || 0, r.fallos    || 0),
+        ultimaVez: Math.max(l.ultimaVez || 0, r.ultimaVez || 0)
       };
+      if (JSON.stringify(merged) !== JSON.stringify(l)) cambios++;
+      progreso[cod] = merged;
     });
     guardarProgresoLocal();
-    setSyncStatus('ok', 'Sincronizado');
-    // Reconstruir cola con el progreso actualizado
-    construirCola();
+    if (cambios > 0) construirCola(); // reconstruir cola con el progreso actualizado
+    setSyncStatus('ok', 'Sincronizado (' + Object.keys(progreso).length + ' partidas)');
   } catch(e) {
     console.error('Error cargando progreso GitHub:', e);
-    setSyncStatus('error', 'Error al leer');
+    setSyncStatus('error', 'Error al leer: ' + e.message);
   }
 }
 
 /* ============================================================
    GITHUB — ESCRIBIR progreso.json
+   FIX: codificar UTF-8 correctamente antes de base64
 ============================================================ */
 async function guardarProgresoGitHub() {
   const token = getToken();
@@ -456,69 +512,51 @@ async function guardarProgresoGitHub() {
   guardandoAhora = true;
   setSyncStatus('saving', 'Guardando...');
   try {
-    const contenido = btoa(unescape(encodeURIComponent(JSON.stringify(progreso, null, 2))));
-    const body = {
-      message: 'progreso actualizado',
-      content: contenido,
-      branch:  GH_BRANCH
-    };
+    // Codificar UTF-8 correctamente (sin spread para evitar stack overflow con JSONs grandes)
+    const json  = JSON.stringify(progreso, null, 2);
+    const bytes = new TextEncoder().encode(json);
+    let b64 = '';
+    for (let i = 0; i < bytes.length; i++) b64 += String.fromCharCode(bytes[i]);
+    b64 = btoa(b64);
+
+    const body = { message: 'progreso actualizado', content: b64, branch: GH_BRANCH };
     if (ghSha) body.sha = ghSha;
+
     const r = await fetch(GH_API, {
-      method:  'PUT',
+      method: 'PUT',
       headers: {
         Authorization: 'token ' + token,
-        Accept:        'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(body)
     });
-    if (!r.ok) {
-      // SHA desactualizado: releer y reintentar
-      if (r.status === 409) {
-        guardandoAhora = false;
-        await cargarProgresoGitHub();
-        await guardarProgresoGitHub();
-        return;
-      }
-      throw new Error('HTTP ' + r.status);
+
+    if (r.status === 409) {
+      // Conflicto de SHA: releer y reintentar una vez
+      guardandoAhora = false;
+      await cargarProgresoGitHub();
+      await guardarProgresoGitHub();
+      return;
     }
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+
     const data = await r.json();
     ghSha = data.content.sha;
     pendientesGuardado = 0;
-    setSyncStatus('ok', 'Guardado');
+    setSyncStatus('ok', 'Guardado (' + Object.keys(progreso).length + ' partidas)');
   } catch(e) {
     console.error('Error guardando en GitHub:', e);
-    setSyncStatus('error', 'Error al guardar');
+    setSyncStatus('error', 'Error al guardar: ' + e.message);
   } finally {
     guardandoAhora = false;
   }
 }
 
-async function forzarGuardado() {
-  await guardarProgresoGitHub();
-}
+async function forzarGuardado() { await guardarProgresoGitHub(); }
 
 /* ============================================================
-   PERSISTENCIA LOCAL
-============================================================ */
-function cargarProgresoLocal() {
-  try { const s = localStorage.getItem('presupuesto_va_v2'); if (s) progreso = JSON.parse(s); } catch(e) { progreso = {}; }
-}
-function guardarProgresoLocal() {
-  try { localStorage.setItem('presupuesto_va_v2', JSON.stringify(progreso)); } catch(e) {}
-}
-function resetProgreso() {
-  if (!confirm('Seguro que quieres borrar todo el progreso guardado?')) return;
-  progreso = {};
-  ghSha = null;
-  guardarProgresoLocal();
-  guardarProgresoGitHub();
-  actualizarProgreso();
-  aplicarFiltro();
-}
-
-/* ============================================================
-   GUARDADO COMBINADO (local siempre + GitHub cada 5)
+   GUARDADO COMBINADO: local siempre + GitHub cada 5
 ============================================================ */
 function guardarProgreso() {
   guardarProgresoLocal();
@@ -526,23 +564,38 @@ function guardarProgreso() {
   if (pendientesGuardado >= 5) {
     guardarProgresoGitHub();
   } else {
-    setSyncStatus('saving', pendientesGuardado + '/5 sin guardar');
+    setSyncStatus('saving', pendientesGuardado + '/5 pendientes');
   }
+}
+
+function resetProgreso() {
+  if (!confirm('Seguro que quieres borrar todo el progreso guardado?')) return;
+  progreso = {}; ghSha = null;
+  guardarProgresoLocal();
+  guardarProgresoGitHub();
+  actualizarProgreso();
+  aplicarFiltro();
 }
 
 /* ============================================================
    CARGA JSON DE PARTIDAS
 ============================================================ */
 async function init() {
+  // 1. Cargar progreso local primero (respuesta inmediata)
   cargarProgresoLocal();
+
+  // 2. Comprobar si hay token guardado
   const token = getToken();
-  if (!token) {
-    // Mostrar modal solo la primera vez (sin token guardado)
-    document.getElementById('modal-token').classList.remove('hidden');
-    setSyncStatus('', 'Sin token');
+  if (token) {
+    setSyncStatus('ok', 'Token guardado');
+    // No abrir modal — el token ya existe
   } else {
-    setSyncStatus('ok', 'Token OK');
+    setSyncStatus('', 'Sin token');
+    // Abrir modal solo si no hay token en absoluto
+    document.getElementById('modal-token').classList.remove('hidden');
   }
+
+  // 3. Cargar el JSON de partidas
   try {
     const resp = await fetch('partidas_presupuesto_valladolid_2026_MASTER.json');
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -551,7 +604,8 @@ async function init() {
     document.getElementById('loading-msg').style.display = 'none';
     document.getElementById('main-trainer').style.display = 'block';
     poblarFiltroProgramas();
-    // Cargar progreso de GitHub (merge con local) y luego arrancar
+
+    // 4. Si hay token, sincronizar con GitHub y luego arrancar
     if (token) {
       await cargarProgresoGitHub();
     }
@@ -619,10 +673,7 @@ function aplicarFiltro() {
 ============================================================ */
 function fisherYates(arr) {
   const a = [...arr];
-  for (let i = a.length-1; i>0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
+  for (let i = a.length-1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
 function intervaloMs(aciertos) {
@@ -630,17 +681,16 @@ function intervaloMs(aciertos) {
 }
 function construirCola() {
   if (modoActual === 'spaced') {
-    const ahora = Date.now(), vencidas = [], futuras = [];
+    const ahora=Date.now(), vencidas=[], futuras=[];
     partidasFiltradas.forEach(p => {
-      const pr = progreso[p.codigo]||{};
-      const prox = (pr.ultimaVez||0) + intervaloMs(pr.aciertos||0);
-      if (prox <= ahora) vencidas.push(p);
-      else futuras.push({p, prox});
+      const pr=progreso[p.codigo]||{};
+      const prox=(pr.ultimaVez||0)+intervaloMs(pr.aciertos||0);
+      if(prox<=ahora) vencidas.push(p); else futuras.push({p,prox});
     });
-    futuras.sort((a,b) => a.prox - b.prox);
-    cola = [...fisherYates(vencidas), ...futuras.map(x=>x.p)];
+    futuras.sort((a,b)=>a.prox-b.prox);
+    cola=[...fisherYates(vencidas),...futuras.map(x=>x.p)];
   } else {
-    cola = fisherYates(partidasFiltradas);
+    cola=fisherYates(partidasFiltradas);
   }
 }
 
@@ -648,32 +698,31 @@ function construirCola() {
    NAVEGACION
 ============================================================ */
 function siguiente() {
-  if (indiceHistorial < historial.length-1) { indiceHistorial++; mostrarPartida(historial[indiceHistorial], false); return; }
-  if (!cola.length) construirCola();
-  const p = cola.shift();
-  historial.push(p); indiceHistorial++;
-  mostrarPartida(p, true);
+  if(indiceHistorial<historial.length-1){indiceHistorial++;mostrarPartida(historial[indiceHistorial],false);return;}
+  if(!cola.length) construirCola();
+  const p=cola.shift(); historial.push(p); indiceHistorial++;
+  mostrarPartida(p,true);
 }
 function anterior() {
-  if (indiceHistorial <= 0) return;
-  indiceHistorial--; mostrarPartida(historial[indiceHistorial], false);
+  if(indiceHistorial<=0) return;
+  indiceHistorial--; mostrarPartida(historial[indiceHistorial],false);
 }
-function mostrarPartida(p, esNueva) {
-  actual = p; mostrado = false;
-  if (esNueva) {
+function mostrarPartida(p,esNueva) {
+  actual=p; mostrado=false;
+  if(esNueva){
     sesion.vistas++;
-    if (!progreso[p.codigo]) progreso[p.codigo] = {aciertos:0, fallos:0, ultimaVez:0};
-    progreso[p.codigo].ultimaVez = Date.now();
+    if(!progreso[p.codigo]) progreso[p.codigo]={aciertos:0,fallos:0,ultimaVez:0};
+    progreso[p.codigo].ultimaVez=Date.now();
     guardarProgreso();
   }
-  document.getElementById('q-codigo').textContent = p.codigo;
-  const pr = progreso[p.codigo]||{};
-  document.getElementById('q-info').textContent = 'Aciertos: '+(pr.aciertos||0)+'  \u00b7  Fallos: '+(pr.fallos||0);
-  document.getElementById('q-nivel').textContent = ['Nueva','Nivel 1','Nivel 2','Nivel 3','Dominada'][Math.min(pr.aciertos||0,4)];
-  document.getElementById('answer-card').className = 'answer-card';
-  document.getElementById('btn-mostrar-row').style.display = 'flex';
-  document.getElementById('btn-valorar-row').style.display = 'none';
-  document.getElementById('nav-info').textContent = cola.length ? cola.length+' en cola' : 'Cola completada \u2013 repasando';
+  document.getElementById('q-codigo').textContent=p.codigo;
+  const pr=progreso[p.codigo]||{};
+  document.getElementById('q-info').textContent='Aciertos: '+(pr.aciertos||0)+'  \u00b7  Fallos: '+(pr.fallos||0);
+  document.getElementById('q-nivel').textContent=['Nueva','Nivel 1','Nivel 2','Nivel 3','Dominada'][Math.min(pr.aciertos||0,4)];
+  document.getElementById('answer-card').className='answer-card';
+  document.getElementById('btn-mostrar-row').style.display='flex';
+  document.getElementById('btn-valorar-row').style.display='none';
+  document.getElementById('nav-info').textContent=cola.length?cola.length+' en cola':'Cola completada \u2013 repasando';
   actualizarStats();
 }
 
@@ -681,11 +730,10 @@ function mostrarPartida(p, esNueva) {
    RESPUESTA
 ============================================================ */
 function mostrarRespuesta() {
-  mostrado = true;
-  const p = actual, ec = p.economica||{};
-  const fila = o => !o ? '' :
-    '<div class="answer-row"><span class="answer-code">'+esc(o.codigo||'')+'</span><span class="answer-text">'+esc(o.texto||'')+'</span></div>';
-  document.getElementById('answer-card').innerHTML =
+  mostrado=true;
+  const p=actual,ec=p.economica||{};
+  const fila=o=>!o?'':'<div class="answer-row"><span class="answer-code">'+esc(o.codigo||'')+'</span><span class="answer-text">'+esc(o.texto||'')+'</span></div>';
+  document.getElementById('answer-card').innerHTML=
     '<div class="answer-section"><div class="answer-title">Organica</div>'+fila(p.organica)+'</div>'+
     '<hr class="answer-divider">'+
     '<div class="answer-section"><div class="answer-title">Clasificacion por programas</div>'+
@@ -695,70 +743,67 @@ function mostrarRespuesta() {
     '<div class="answer-section"><div class="answer-title">Economica</div>'+
       fila(ec.capitulo)+fila(ec.articulo)+fila(ec.concepto)+(ec.subconcepto?fila(ec.subconcepto):'')+
     '</div>';
-  document.getElementById('answer-card').className = 'answer-card shown';
-  document.getElementById('btn-mostrar-row').style.display = 'none';
-  document.getElementById('btn-valorar-row').style.display = 'flex';
+  document.getElementById('answer-card').className='answer-card shown';
+  document.getElementById('btn-mostrar-row').style.display='none';
+  document.getElementById('btn-valorar-row').style.display='flex';
 }
 
 /* ============================================================
    VALORACION
 ============================================================ */
 function valorar(acierto) {
-  if (!actual) return;
-  if (!progreso[actual.codigo]) progreso[actual.codigo] = {aciertos:0, fallos:0, ultimaVez:Date.now()};
-  if (acierto) { progreso[actual.codigo].aciertos++; sesion.aciertos++; }
-  else {
-    progreso[actual.codigo].fallos++; sesion.fallos++;
-    if (modoActual === 'spaced') cola.splice(Math.min(5, Math.floor(cola.length*0.3)), 0, actual);
+  if(!actual) return;
+  if(!progreso[actual.codigo]) progreso[actual.codigo]={aciertos:0,fallos:0,ultimaVez:Date.now()};
+  if(acierto){progreso[actual.codigo].aciertos++;sesion.aciertos++;}
+  else{
+    progreso[actual.codigo].fallos++;sesion.fallos++;
+    if(modoActual==='spaced') cola.splice(Math.min(5,Math.floor(cola.length*0.3)),0,actual);
   }
-  guardarProgreso();
-  actualizarStats();
-  siguiente();
+  guardarProgreso(); actualizarStats(); siguiente();
 }
 
 /* ============================================================
-   STATS SESION
+   STATS
 ============================================================ */
 function actualizarStats() {
-  document.getElementById('stat-vistas').textContent   = sesion.vistas;
-  document.getElementById('stat-aciertos').textContent = sesion.aciertos;
-  document.getElementById('stat-fallos').textContent   = sesion.fallos;
-  document.getElementById('stat-cola').textContent     = cola.length || '-';
+  document.getElementById('stat-vistas').textContent=sesion.vistas;
+  document.getElementById('stat-aciertos').textContent=sesion.aciertos;
+  document.getElementById('stat-fallos').textContent=sesion.fallos;
+  document.getElementById('stat-cola').textContent=cola.length||'-';
 }
 
 /* ============================================================
-   PESTAÑA PROGRESO
+   PROGRESO
 ============================================================ */
 function actualizarProgreso() {
-  const total     = partidas.length;
-  const vistas    = partidas.filter(p =>  progreso[p.codigo]).length;
-  const dominadas = partidas.filter(p => (progreso[p.codigo]?.aciertos||0)>=2).length;
-  const repasar   = partidas.filter(p => (progreso[p.codigo]?.fallos||0)>0 && (progreso[p.codigo]?.aciertos||0)<2).length;
-  document.getElementById('p-total').textContent     = total;
-  document.getElementById('p-vistas').textContent    = vistas;
-  document.getElementById('p-dominadas').textContent = dominadas;
-  document.getElementById('p-repasar').textContent   = repasar;
-  const pv = total>0?Math.round(vistas/total*100):0;
-  const pd = total>0?Math.round(dominadas/total*100):0;
-  document.getElementById('prog-vistas-pct').textContent = pv+'%';
-  document.getElementById('prog-dom-pct').textContent    = pd+'%';
-  document.getElementById('prog-vistas-bar').style.width = pv+'%';
-  document.getElementById('prog-dom-bar').style.width    = pd+'%';
-  const porProg = {};
-  partidas.forEach(p => {
-    const cod = String(p.programas?.programa?.codigo||'').trim(); if(!cod) return;
+  const total=partidas.length;
+  const vistas=partidas.filter(p=>progreso[p.codigo]).length;
+  const dominadas=partidas.filter(p=>(progreso[p.codigo]?.aciertos||0)>=2).length;
+  const repasar=partidas.filter(p=>(progreso[p.codigo]?.fallos||0)>0&&(progreso[p.codigo]?.aciertos||0)<2).length;
+  document.getElementById('p-total').textContent=total;
+  document.getElementById('p-vistas').textContent=vistas;
+  document.getElementById('p-dominadas').textContent=dominadas;
+  document.getElementById('p-repasar').textContent=repasar;
+  const pv=total>0?Math.round(vistas/total*100):0, pd=total>0?Math.round(dominadas/total*100):0;
+  document.getElementById('prog-vistas-pct').textContent=pv+'%';
+  document.getElementById('prog-dom-pct').textContent=pd+'%';
+  document.getElementById('prog-vistas-bar').style.width=pv+'%';
+  document.getElementById('prog-dom-bar').style.width=pd+'%';
+  const porProg={};
+  partidas.forEach(p=>{
+    const cod=String(p.programas?.programa?.codigo||'').trim(); if(!cod) return;
     if(!porProg[cod]) porProg[cod]={total:0,vistas:0,dominadas:0,repasar:0};
     porProg[cod].total++;
-    const pr = progreso[p.codigo];
-    if(pr){ porProg[cod].vistas++; if((pr.aciertos||0)>=2) porProg[cod].dominadas++; if((pr.fallos||0)>0&&(pr.aciertos||0)<2) porProg[cod].repasar++; }
+    const pr=progreso[p.codigo];
+    if(pr){porProg[cod].vistas++;if((pr.aciertos||0)>=2)porProg[cod].dominadas++;if((pr.fallos||0)>0&&(pr.aciertos||0)<2)porProg[cod].repasar++;}
   });
   let html='';
-  GRUPOS_VA.forEach(g => {
-    const con = g.programas.filter(c=>porProg[c]); if(!con.length) return;
+  GRUPOS_VA.forEach(g=>{
+    const con=g.programas.filter(c=>porProg[c]); if(!con.length) return;
     html+='<div class="section-header" style="margin-top:20px">'+esc(g.cod)+' \u2013 '+esc(g.txt)+'</div>';
     html+='<table class="data-table"><thead><tr><th>Programa</th><th>Partidas</th><th>Vistas</th><th>Dominadas</th><th>Repasar</th></tr></thead><tbody>';
     con.forEach(cod=>{
-      const d=porProg[cod], pct=d.total>0?Math.round(d.dominadas/d.total*100):0;
+      const d=porProg[cod],pct=d.total>0?Math.round(d.dominadas/d.total*100):0;
       html+='<tr><td><strong>'+esc(cod)+'</strong> <span style="color:var(--text-2);font-size:12px">'+esc(PROGRAMAS_OFICIALES[cod]||cod)+'</span></td>'+
         '<td>'+d.total+'</td><td>'+d.vistas+'</td>'+
         '<td>'+d.dominadas+' <span style="color:var(--text-3);font-size:11px">('+pct+'%)</span></td>'+
@@ -770,47 +815,40 @@ function actualizarProgreso() {
 }
 
 /* ============================================================
-   PESTAÑA PROGRAMAS
+   PROGRAMAS EHA
 ============================================================ */
 function renderEHA() {
-  if (!partidas.length) { document.getElementById('eha-content').innerHTML='<div class="info-msg">Carga primero las partidas en Entrenar.</div>'; return; }
-  const progsEnJSON={}, porProg={};
-  partidas.forEach(p => {
-    const cod=String(p.programas?.programa?.codigo||'').trim(); if(!cod) return;
-    progsEnJSON[cod]=true; porProg[cod]=(porProg[cod]||0)+1;
-  });
-  const total=Object.keys(PROGRAMAS_OFICIALES).length;
-  const pres=Object.keys(PROGRAMAS_OFICIALES).filter(c=>progsEnJSON[c]).length;
-  const aus=total-pres, pct=Math.round(pres/total*100);
+  if(!partidas.length){document.getElementById('eha-content').innerHTML='<div class="info-msg">Carga primero las partidas en Entrenar.</div>';return;}
+  const progsEnJSON={},porProg={};
+  partidas.forEach(p=>{const cod=String(p.programas?.programa?.codigo||'').trim();if(!cod)return;progsEnJSON[cod]=true;porProg[cod]=(porProg[cod]||0)+1;});
+  const total=Object.keys(PROGRAMAS_OFICIALES).length,pres=Object.keys(PROGRAMAS_OFICIALES).filter(c=>progsEnJSON[c]).length;
+  const aus=total-pres,pct=Math.round(pres/total*100);
   const extras=[...Object.keys(progsEnJSON)].filter(c=>!PROGRAMAS_OFICIALES[c]).sort();
-  let html=
-    '<div class="stats-row">'+
-      '<div class="stat-card"><div class="s-label">Programas oficiales</div><div class="s-val">'+total+'</div></div>'+
-      '<div class="stat-card"><div class="s-label">En tu JSON</div><div class="s-val good">'+pres+'</div></div>'+
-      '<div class="stat-card"><div class="s-label">Ausentes</div><div class="s-val '+(aus?'warn':'good')+'">'+aus+'</div></div>'+
-      '<div class="stat-card"><div class="s-label">Cobertura</div><div class="s-val">'+pct+'%</div></div>'+
-    '</div>'+
-    '<div class="progress-section">'+
-      '<div class="progress-label"><strong>Cobertura del JSON respecto al presupuesto oficial</strong><span>'+pct+'%</span></div>'+
-      '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div>'+
-    '</div>';
+  let html='<div class="stats-row">'+
+    '<div class="stat-card"><div class="s-label">Programas oficiales</div><div class="s-val">'+total+'</div></div>'+
+    '<div class="stat-card"><div class="s-label">En tu JSON</div><div class="s-val good">'+pres+'</div></div>'+
+    '<div class="stat-card"><div class="s-label">Ausentes</div><div class="s-val '+(aus?'warn':'good')+'">'+aus+'</div></div>'+
+    '<div class="stat-card"><div class="s-label">Cobertura</div><div class="s-val">'+pct+'%</div></div>'+
+    '</div><div class="progress-section">'+
+    '<div class="progress-label"><strong>Cobertura respecto al presupuesto oficial</strong><span>'+pct+'%</span></div>'+
+    '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div></div>';
   const listaAus=Object.entries(PROGRAMAS_OFICIALES).filter(([c])=>!progsEnJSON[c]);
   if(listaAus.length){
     html+='<div class="section-header" style="color:var(--danger)">Programas ausentes ('+listaAus.length+')</div>';
-    html+='<table class="data-table"><thead><tr><th>Codigo</th><th>Programa</th><th>Estado</th></tr></thead><tbody>';
-    listaAus.forEach(([cod,nom])=>{ html+='<tr><td><code style="font-family:var(--mono);font-size:12px">'+esc(cod)+'</code></td><td>'+esc(nom)+'</td><td><span class="badge missing">ausente</span></td></tr>'; });
+    html+='<table class="data-table"><thead><tr><th>Codigo</th><th>Programa</th></tr></thead><tbody>';
+    listaAus.forEach(([cod,nom])=>{html+='<tr><td><code style="font-family:var(--mono);font-size:12px">'+esc(cod)+'</code></td><td>'+esc(nom)+'</td></tr>';});
     html+='</tbody></table>';
   }
   html+='<div class="section-header">Todos los programas por grupo</div>';
   GRUPOS_VA.forEach(g=>{
-    const tod=g.programas.every(c=>progsEnJSON[c]), alg=g.programas.some(c=>progsEnJSON[c]);
-    const est=tod?'ok':(alg?'partial':'missing'), lbl=tod?'completo':(alg?'parcial':'ausente');
+    const tod=g.programas.every(c=>progsEnJSON[c]),alg=g.programas.some(c=>progsEnJSON[c]);
+    const est=tod?'ok':(alg?'partial':'missing'),lbl=tod?'completo':(alg?'parcial':'ausente');
     html+='<table class="data-table" style="margin-bottom:16px"><thead><tr><th colspan="3" style="background:var(--surface-2)">'+
       '<span style="font-size:13px;color:var(--text)">'+esc(g.cod)+' \u2013 '+esc(g.txt)+'</span>'+
       ' <span class="badge '+est+'" style="margin-left:8px">'+lbl+'</span></th></tr>'+
       '<tr><th>Programa</th><th>Nombre</th><th>Partidas</th></tr></thead><tbody>';
     g.programas.forEach(cod=>{
-      const tiene=progsEnJSON[cod], n=porProg[cod]||0;
+      const tiene=progsEnJSON[cod],n=porProg[cod]||0;
       html+='<tr><td><code style="font-family:var(--mono);font-size:12px">'+esc(cod)+'</code></td>'+
         '<td>'+esc(PROGRAMAS_OFICIALES[cod]||cod)+'</td>'+
         '<td>'+(tiene?'<span class="badge ok">'+n+' partidas</span>':'<span class="badge missing">ausente</span>')+'</td></tr>';
@@ -820,7 +858,7 @@ function renderEHA() {
   if(extras.length){
     html+='<div class="section-header">En el JSON pero no en el PDF oficial ('+extras.length+')</div>';
     html+='<table class="data-table"><thead><tr><th>Codigo</th><th>Partidas</th></tr></thead><tbody>';
-    extras.forEach(cod=>{ html+='<tr><td><code style="font-family:var(--mono);font-size:12px">'+esc(cod)+'</code></td><td>'+(porProg[cod]||0)+'</td></tr>'; });
+    extras.forEach(cod=>{html+='<tr><td><code style="font-family:var(--mono);font-size:12px">'+esc(cod)+'</code></td><td>'+(porProg[cod]||0)+'</td></tr>';});
     html+='</tbody></table>';
   }
   document.getElementById('eha-content').innerHTML=html;
@@ -829,28 +867,28 @@ function renderEHA() {
 /* ============================================================
    TECLADO
 ============================================================ */
-document.addEventListener('keydown', e=>{
+document.addEventListener('keydown',e=>{
   if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-  if(e.code==='Space'||e.key===' '){ e.preventDefault(); if(!mostrado&&actual) mostrarRespuesta(); }
-  else if(e.code==='ArrowRight'){ if(mostrado) valorar(true);  else if(actual) siguiente(); }
-  else if(e.code==='ArrowLeft') { if(mostrado) valorar(false); else anterior(); }
-  else if(e.code==='KeyS')      { siguiente(); }
+  if(e.code==='Space'||e.key===' '){e.preventDefault();if(!mostrado&&actual)mostrarRespuesta();}
+  else if(e.code==='ArrowRight'){if(mostrado)valorar(true);else if(actual)siguiente();}
+  else if(e.code==='ArrowLeft'){if(mostrado)valorar(false);else anterior();}
+  else if(e.code==='KeyS'){siguiente();}
 });
 
 /* ============================================================
-   GUARDAR AL CERRAR/CAMBIAR PESTANA (por si quedan pendientes)
+   GUARDAR AL SALIR
 ============================================================ */
-window.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState==='hidden' && pendientesGuardado>0) guardarProgresoGitHub();
+window.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'&&pendientesGuardado>0) guardarProgresoGitHub();
 });
-window.addEventListener('beforeunload', ()=>{
+window.addEventListener('beforeunload',()=>{
   if(pendientesGuardado>0) guardarProgresoGitHub();
 });
 
 /* ============================================================
    UTILIDADES
 ============================================================ */
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 /* ============================================================
    ARRANQUE
