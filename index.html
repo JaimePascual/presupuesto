@@ -463,8 +463,7 @@ async function cargarProgresoGitHub() {
     const r = await fetch(GH_API + '?ref=' + GH_BRANCH,
       { headers: {
           Authorization: 'token ' + token,
-          Accept: 'application/vnd.github.v3+json',
-          'Cache-Control': 'no-cache'
+          Accept: 'application/vnd.github.v3+json'
         }
       });
     if (r.status === 404) {
@@ -516,7 +515,7 @@ async function guardarProgresoGitHub() {
     if (!ghSha) {
       console.log('[GitHub] Sin SHA, leyendo antes de escribir...');
       const rCheck = await fetch(GH_API + '?ref=' + GH_BRANCH,
-        { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' } });
+        { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' } });
       if (rCheck.ok) {
         const dCheck = await rCheck.json();
         ghSha = dCheck.sha;
