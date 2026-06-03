@@ -201,7 +201,17 @@
   },
   "07/1711/619": {
     "aciertos": 0,
-    "fallos": 0,
+    "fallos": 1,
     "ultimaVez": 1780525032205
+  },
+  "03/3411/489.48": {
+    "aciertos": 0,
+    "fallos": 1,
+    "ultimaVez": 1780525034324
+  },
+  "11/1321/223": {
+    "aciertos": 0,
+    "fallos": 1,
+    "ultimaVez": 1780525037099
   }
 }
