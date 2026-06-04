@@ -410,8 +410,18 @@
     "ultimaVez": 1780553314606
   },
   "09/4321/466.99": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1780553364841
+  },
+  "11/1321/226.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780553413340
+  },
+  "03/9241/130": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780553492248
   }
 }
