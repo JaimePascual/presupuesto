@@ -1,6 +1,6 @@
 {
   "01/4331/220": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1780644956474
   },
@@ -458,5 +458,15 @@
     "aciertos": 0,
     "fallos": 0,
     "ultimaVez": 1780609117538
+  },
+  "07/1701/227": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780645027297
+  },
+  "11/1621/219.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1780645066753
   }
 }
