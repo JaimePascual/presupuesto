@@ -145,9 +145,9 @@
     "ultimaVez": 1780243839321
   },
   "06/3321/223.99": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
-    "ultimaVez": 1780243984350
+    "ultimaVez": 1783497767440
   },
   "08/1301/227.22": {
     "aciertos": 0,
@@ -1253,5 +1253,20 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1783416098894
+  },
+  "04/9204/831.06": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1783416163245
+  },
+  "01/4331/481.01": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1783497789184
+  },
+  "09/4321/227": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1783497818241
   }
 }
