@@ -1365,8 +1365,18 @@
     "ultimaVez": 1783925553886
   },
   "01/9203/227.22": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1784012339758
+  },
+  "08/1301/227.20": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1784015574473
+  },
+  "08/1651/130": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1784015627128
   }
 }
