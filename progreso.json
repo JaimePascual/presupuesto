@@ -1423,5 +1423,25 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1784100574648
+  },
+  "07/1721/121.12": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1784100585962
+  },
+  "01/4331/481.22": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1784189035965
+  },
+  "01/9206/120": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1784189049310
+  },
+  "05/4312/489": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1784189062439
   }
 }
