@@ -525,7 +525,7 @@
     "ultimaVez": 1780727393692
   },
   "06/3341/221": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1784617502536
   },
@@ -1508,5 +1508,10 @@
     "aciertos": 0,
     "fallos": 0,
     "ultimaVez": 1784536612814
+  },
+  "08/1651/204": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1784617594703
   }
 }
