@@ -1688,5 +1688,20 @@
     "aciertos": 0,
     "fallos": 0,
     "ultimaVez": 1785622381283
+  },
+  "06/3202/489.04": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1785624568514
+  },
+  "10/2312/480": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1785624641983
+  },
+  "04/9204/216": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1785624721843
   }
 }
