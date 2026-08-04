@@ -1272,7 +1272,7 @@
   "01/9203/215": {
     "aciertos": 1,
     "fallos": 0,
-    "ultimaVez": 1783497854329
+    "ultimaVez": 1785834505628
   },
   "05/4314/467.25": {
     "aciertos": 1,
@@ -1728,5 +1728,20 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1785743834479
+  },
+  "03/9241/120": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1785743868368
+  },
+  "06/3321/121": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1785834430964
+  },
+  "03/3411/473.19": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1785834477235
   }
 }
