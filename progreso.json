@@ -1960,8 +1960,18 @@
     "ultimaVez": 1786603497051
   },
   "01/9201/226.99": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1786698255832
+  },
+  "03/9200/750.04": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1786698287340
+  },
+  "01/9201/489.03": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1786698297708
   }
 }
