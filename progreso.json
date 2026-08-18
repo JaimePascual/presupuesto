@@ -480,7 +480,7 @@
     "ultimaVez": 1780645158736
   },
   "09/4321/215.00": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
     "ultimaVez": 1787033122199
   },
@@ -1983,5 +1983,15 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1787033082641
+  },
+  "03/9241/489": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1787033164168
+  },
+  "01/4331/221": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1787033190680
   }
 }
