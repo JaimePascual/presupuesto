@@ -595,7 +595,7 @@
     "ultimaVez": 1780986580423
   },
   "11/1621/150": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
     "ultimaVez": 1787570920246
   },
@@ -2093,5 +2093,15 @@
     "aciertos": 0,
     "fallos": 0,
     "ultimaVez": 1787304157345
+  },
+  "03/3411/473.95": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1787573023148
+  },
+  "01/9206/623.04": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1787573041827
   }
 }
