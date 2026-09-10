@@ -1010,9 +1010,9 @@
     "ultimaVez": 1782369528008
   },
   "04/9202/162.16": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
-    "ultimaVez": 1782369582992
+    "ultimaVez": 1787817015934
   },
   "07/1721/131": {
     "aciertos": 2,
@@ -1827,7 +1827,7 @@
   "11/1302/230": {
     "aciertos": 0,
     "fallos": 0,
-    "ultimaVez": 1786013580347
+    "ultimaVez": 1787817047004
   },
   "05/4314/121.12": {
     "aciertos": 1,
@@ -2198,5 +2198,20 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1787816971580
+  },
+  "02/9332/120.01": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1789029415206
+  },
+  "09/4322/641.06": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1789029430405
+  },
+  "04/9321/151.15": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1789029469389
   }
 }
