@@ -2315,8 +2315,18 @@
     "ultimaVez": 1789633311612
   },
   "05/4301/121.12": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1789633322700
+  },
+  "01/4331/481.28": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1789633414411
+  },
+  "03/9241/221.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1789633431697
   }
 }
