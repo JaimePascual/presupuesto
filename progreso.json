@@ -2340,8 +2340,18 @@
     "ultimaVez": 1789972859565
   },
   "08/1301/226": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1789972878445
+  },
+  "03/3411/750.75": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1789973062563
+  },
+  "01/9312/213.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1789973083747
   }
 }
