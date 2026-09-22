@@ -2363,5 +2363,20 @@
     "aciertos": 0,
     "fallos": 0,
     "ultimaVez": 1789973108867
+  },
+  "03/9241/830.04": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1790059018671
+  },
+  "07/1711/130": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1790059051497
+  },
+  "10/2412/214.02": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1790059068737
   }
 }
