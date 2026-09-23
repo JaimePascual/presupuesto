@@ -1202,7 +1202,7 @@
   "10/2314/480": {
     "aciertos": 1,
     "fallos": 0,
-    "ultimaVez": 1783073757803
+    "ultimaVez": 1790148872137
   },
   "04/9204/636": {
     "aciertos": 0,
@@ -2395,8 +2395,13 @@
     "ultimaVez": 1790059212790
   },
   "06/3341/482": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1790148417318
+  },
+  "09/4322/352.35": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1790148838601
   }
 }
