@@ -2425,8 +2425,18 @@
     "ultimaVez": 1790233509181
   },
   "05/4312/213.00": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1790233578375
+  },
+  "07/1623/227": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1790233595142
+  },
+  "08/1301/352": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1790233620766
   }
 }
