@@ -2475,9 +2475,9 @@
     "ultimaVez": 1790322835828
   },
   "11/1631/121.01": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
-    "ultimaVez": 1791275913634
+    "ultimaVez": 1791873465281
   },
   "04/9204/227": {
     "aciertos": 1,
@@ -2575,8 +2575,13 @@
     "ultimaVez": 1791532701153
   },
   "02/9331/230.20": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1791873291777
+  },
+  "01/9203/227.20": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1791873460569
   }
 }
