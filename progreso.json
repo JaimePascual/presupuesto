@@ -512,7 +512,7 @@
   "01/9121/226.10": {
     "aciertos": 1,
     "fallos": 0,
-    "ultimaVez": 1780727173880
+    "ultimaVez": 1792052856730
   },
   "01/9205/226": {
     "aciertos": 1,
@@ -2633,5 +2633,15 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1792052579264
+  },
+  "10/2412/212": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1792052601039
+  },
+  "02/1513/619.06": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1792057345011
   }
 }
