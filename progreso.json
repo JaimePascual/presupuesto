@@ -2650,8 +2650,18 @@
     "ultimaVez": 1792058486487
   },
   "08/1532/120.03": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1792580527182
+  },
+  "04/9209/203.20": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1792582447528
+  },
+  "06/3341/489.48": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1792582459624
   }
 }
