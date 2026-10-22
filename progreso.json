@@ -470,9 +470,9 @@
     "ultimaVez": 1780645066753
   },
   "05/4312/120.03": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
-    "ultimaVez": 1780645097970
+    "ultimaVez": 1792656005759
   },
   "04/9204/216.02": {
     "aciertos": 1,
@@ -2663,5 +2663,30 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1792582459624
+  },
+  "10/2313/130.13": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1792582479006
+  },
+  "06/3341/221.99": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1792582557505
+  },
+  "11/3111/226.06": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1792582608568
+  },
+  "11/1321/221": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1792656032191
+  },
+  "11/1361/227.22": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1792656113536
   }
 }
