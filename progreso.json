@@ -2790,8 +2790,33 @@
     "ultimaVez": 1793173461915
   },
   "05/4301/233.04": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1793173496748
+  },
+  "06/3341/789": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1793174760092
+  },
+  "01/9203/131": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1793174773972
+  },
+  "11/1302/830": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1793261565604
+  },
+  "03/3411/473.12": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1793261587953
+  },
+  "04/9321/121.12": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1793261610512
   }
 }
