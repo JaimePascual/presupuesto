@@ -1680,7 +1680,7 @@
     "ultimaVez": 1785412010902
   },
   "04/9341/233.23": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
     "ultimaVez": 1793692022263
   },
@@ -2868,5 +2868,15 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1793692015214
+  },
+  "04/9202/227.20": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1793692030471
+  },
+  "07/1711/121.00": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1793692038383
   }
 }
