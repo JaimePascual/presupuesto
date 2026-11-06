@@ -110,9 +110,9 @@
     "ultimaVez": 1793865548051
   },
   "01/9203/121.02": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
-    "ultimaVez": 1784798209783
+    "ultimaVez": 1793952592276
   },
   "03/9241/213.03": {
     "aciertos": 0,
@@ -2955,8 +2955,13 @@
     "ultimaVez": 1793952555195
   },
   "04/9231/120": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1793952577867
+  },
+  "01/9207/220": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1793952586259
   }
 }
