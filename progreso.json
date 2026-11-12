@@ -185,9 +185,9 @@
     "ultimaVez": 1784534384301
   },
   "11/1302/231": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
-    "ultimaVez": 1787033235933
+    "ultimaVez": 1794484099571
   },
   "03/9241/221.02": {
     "aciertos": 1,
@@ -2075,9 +2075,9 @@
     "ultimaVez": 1787304026312
   },
   "07/1711/226.99": {
-    "aciertos": 1,
+    "aciertos": 2,
     "fallos": 0,
-    "ultimaVez": 1787304048936
+    "ultimaVez": 1794484129202
   },
   "10/2312/632": {
     "aciertos": 1,
@@ -3023,5 +3023,15 @@
     "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1794386485078
+  },
+  "06/3231/213.02": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1794386520420
+  },
+  "10/2312/480.74": {
+    "aciertos": 0,
+    "fallos": 0,
+    "ultimaVez": 1794484141866
   }
 }
