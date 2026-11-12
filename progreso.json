@@ -3030,8 +3030,18 @@
     "ultimaVez": 1794386520420
   },
   "10/2312/480.74": {
-    "aciertos": 0,
+    "aciertos": 1,
     "fallos": 0,
     "ultimaVez": 1794484141866
+  },
+  "04/9204/121.12": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1794484162892
+  },
+  "10/2315/226.06": {
+    "aciertos": 1,
+    "fallos": 0,
+    "ultimaVez": 1794484175292
   }
 }
